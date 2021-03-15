@@ -1,7 +1,7 @@
 foodzy
 ======
 
-a video game written in golang using ebiten
+a video game written in golang using the ebiten 2d game libary
 
 resources
 ----------

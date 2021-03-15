@@ -18,5 +18,4 @@ this file is used to generate asset files to be loaded by the game
 //go:generate file2byteslice -package=assets -input=assets/meat.png -output=assets/meat.go -var=Meat
 //go:generate file2byteslice -package=assets -input=assets/strawberry.png -output=assets/strawberry.go -var=Strawberry
 //go:generate file2byteslice -package=assets -input=assets/tomato.png -output=assets/tomato.go -var=Tomato
-//go:generate file2byteslice -package=assets -input=assets/soundtrack.wav -output=assets/soundtrack.go -var=BackgroundMusic
-
+//go:generate file2byteslice -package=assets -input=assets/soundtrack.mp3 -output=assets/soundtrack.go -var=Soundtrack
