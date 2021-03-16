@@ -2,37 +2,47 @@ package foodzy
 
 import (
 	"github.com/hajimehoshi/ebiten/v2"
-	"log"
+	"math/rand"
 )
 
 type Food struct {
-	image  *ebiten.Image
-	name   string
-	vx, vy float64
-	px     int
-	py     int
+	cooldown int
+	active   bool
+	image    *ebiten.Image
+	name     string
+	px       int
+	py       int
 }
 
-func (e *Food) Update(g *Game) {}
+func (e *Food) Update(g *Game) {
+	// falling
+	e.py = e.py + 5
+
+	// reset when off screen
+	if e.py > ScreenHeight {
+		e.px, e.py = e.randomPosition()
+	}
+}
 
 func (e *Food) Draw(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
-
-	cw, ch := e.image.Size()
-	sw, sh := screen.Size()
-
-	tx := sw/2 - cw/2 + e.px
-	ty := sh/2 - ch/2 + e.py
-	op.GeoM.Translate(float64(tx), float64(ty))
+	op.GeoM.Translate(float64(e.px), float64(e.py))
 	screen.DrawImage(e.image, op)
 }
+
+func (e *Food) randomPosition() (int, int) {
+	imageWidth, imageHeight := e.image.Size()
+	px := rand.Intn(ScreenWidth-imageWidth) + imageWidth
+	py := -1*rand.Intn(ScreenHeight-imageHeight) + imageHeight
+	return px, py
+}
+
 func NewFood(name string, imageBytes []byte) *Food {
 	img, _ := LoadImage(imageBytes)
-
-	food := &Food {
-		name: name,
+	food := &Food{
+		name:  name,
 		image: ebiten.NewImageFromImage(img),
 	}
-	log.Printf("created foood: %s", name)
+	food.px, food.py = food.randomPosition()
 	return food
 }

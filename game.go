@@ -63,8 +63,8 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	g.background.Draw(screen)
 	g.player.Draw(screen)
 
-	for _, v := range g.Food {
-		v.Draw(screen)
+	for _, entity := range g.Food {
+		entity.Draw(screen)
 	}
 }
 
