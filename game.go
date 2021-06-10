@@ -3,6 +3,7 @@ package foodzy
 import (
 	"bytes"
 	"github.com/co0p/foodzy/assets"
+	"github.com/co0p/foodzy/components"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/audio"
 	"github.com/hajimehoshi/ebiten/v2/audio/mp3"
@@ -26,7 +27,7 @@ type Game struct {
 	Speed        float64
 	Food         []Entity
 	background   Entity
-	player       Entity
+	player       *components.Element
 	audioContext *audio.Context
 	audioPlayer  *audio.Player
 }
@@ -36,7 +37,7 @@ func NewGame() *Game {
 	game := &Game{
 		Speed:      0.12,
 		Food:       []Entity{},
-		player:     NewPlayer(),
+		player:     NewPlayerElement(),
 		background: NewBackground(),
 	}
 
@@ -49,7 +50,7 @@ func NewGame() *Game {
 // Update gets called by ebiten and is meant to update any game logic
 func (g *Game) Update() error {
 
-	g.player.Update(g)
+	g.player.OnUpdate()
 
 	for _, v := range g.Food {
 		v.Update(g)
@@ -61,7 +62,7 @@ func (g *Game) Update() error {
 func (g *Game) Draw(screen *ebiten.Image) {
 
 	g.background.Draw(screen)
-	g.player.Draw(screen)
+	g.player.OnDraw(screen)
 
 	for _, entity := range g.Food {
 		entity.Draw(screen)

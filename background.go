@@ -21,7 +21,7 @@ func (b *Background) Update(game *Game) {}
 func NewBackground() *Background {
 	img, _ := LoadImage(assets.Background)
 
-	background := &Background {
+	background := &Background{
 		image: ebiten.NewImageFromImage(img),
 	}
 	log.Printf("created background")

@@ -2,13 +2,15 @@ package foodzy
 
 import (
 	"github.com/co0p/foodzy/assets"
+	"github.com/co0p/foodzy/components"
 	"github.com/hajimehoshi/ebiten/v2"
-	"log"
 )
 
+const playerSize = 50
+
 type Player struct {
-	image *ebiten.Image
-	posX, posY  float64
+	image      *ebiten.Image
+	posX, posY float64
 }
 
 func (p *Player) Draw(screen *ebiten.Image) {
@@ -16,8 +18,8 @@ func (p *Player) Draw(screen *ebiten.Image) {
 	w, h := p.image.Size()
 	sw, sh := screen.Size()
 
-	tx := float64(sw/2 + w/h - w/2) + p.posX
-	ty := float64(sh - h - h/2) + p.posY
+	tx := float64(sw/2+w/h-w/2) + p.posX
+	ty := float64(sh-h-h/2) + p.posY
 	op.GeoM.Translate(tx, ty)
 	screen.DrawImage(p.image, op)
 }
@@ -39,13 +41,18 @@ func (p *Player) moveRight() {
 	p.posX += 5
 }
 
-func NewPlayer() *Player {
-	img, _ := LoadImage(assets.Plate)
+func NewPlayerElement() *components.Element {
 
-	player := &Player{
-		image: ebiten.NewImageFromImage(img),
+	pos := components.Vector{
+		X: float64(ScreenWidth / 2.0),
+		Y: float64(ScreenHeight - playerSize*2.0),
 	}
+	playerElement := components.NewElement("player", true, pos, 0)
 
-	log.Printf("created player")
-	return player
+	spriteRenderer := components.NewSpriteRenderer(playerElement, assets.Plate)
+
+	playerElement.AddComponent(components.NewLoggingComponent(playerElement))
+	playerElement.AddComponent(spriteRenderer)
+
+	return playerElement
 }
