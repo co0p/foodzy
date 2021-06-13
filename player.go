@@ -13,34 +13,6 @@ type Player struct {
 	posX, posY float64
 }
 
-func (p *Player) Draw(screen *ebiten.Image) {
-	op := &ebiten.DrawImageOptions{}
-	w, h := p.image.Size()
-	sw, sh := screen.Size()
-
-	tx := float64(sw/2+w/h-w/2) + p.posX
-	ty := float64(sh-h-h/2) + p.posY
-	op.GeoM.Translate(tx, ty)
-	screen.DrawImage(p.image, op)
-}
-
-func (p *Player) Update(game *Game) {
-	if ebiten.IsKeyPressed(ebiten.KeyLeft) {
-		p.moveLeft()
-	}
-	if ebiten.IsKeyPressed(ebiten.KeyRight) {
-		p.moveRight()
-	}
-}
-
-func (p *Player) moveLeft() {
-	p.posX -= 5
-}
-
-func (p *Player) moveRight() {
-	p.posX += 5
-}
-
 func NewPlayerElement() *components.Element {
 
 	pos := components.Vector{
@@ -49,10 +21,9 @@ func NewPlayerElement() *components.Element {
 	}
 	playerElement := components.NewElement("player", true, pos, 0)
 
-	spriteRenderer := components.NewSpriteRenderer(playerElement, assets.Plate)
-
+	playerElement.AddComponent(components.NewSpriteRenderer(playerElement, assets.Plate))
+	playerElement.AddComponent(components.NewKeyboardMover(playerElement, 5, float64(ScreenWidth)))
 	playerElement.AddComponent(components.NewLoggingComponent(playerElement))
-	playerElement.AddComponent(spriteRenderer)
 
 	return playerElement
 }

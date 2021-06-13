@@ -55,3 +55,7 @@ func newImageFromBytes(input []byte) (image.Image, error) {
 	}
 	return image, nil
 }
+
+func (c *SpriteRenderer) size() (int, int) {
+	return c.image.Size()
+}
