@@ -3,15 +3,11 @@ package foodzy
 import (
 	"github.com/co0p/foodzy/assets"
 	"github.com/co0p/foodzy/components"
-	"github.com/hajimehoshi/ebiten/v2"
 )
 
 const playerSize = 50
 
-type Player struct {
-	image      *ebiten.Image
-	posX, posY float64
-}
+type Player struct{}
 
 func NewPlayerElement() *components.Element {
 

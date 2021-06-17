@@ -3,6 +3,20 @@ foodzy
 
 a video game written in golang using the ebiten 2d game libary
 
+![Game overview](/docs/foodzy.png)
+
+Goal
+----
+
+Keep your nutrition levels balanced as long as possible by eating the food. The longer
+you stay alive the better.
+
+Increase of difficulty
+----------------------
+
+based on your nutrition levels the plate changes form, or your movements become slower.
+
+
 resources
 ----------
 
