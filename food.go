@@ -1,6 +1,7 @@
 package foodzy
 
 import (
+	"github.com/co0p/foodzy/utils"
 	"github.com/hajimehoshi/ebiten/v2"
 	"math/rand"
 )
@@ -38,7 +39,7 @@ func (e *Food) randomPosition() (int, int) {
 }
 
 func NewFood(name string, imageBytes []byte) *Food {
-	img, _ := LoadImage(imageBytes)
+	img, _ := utils.LoadImage(imageBytes)
 	food := &Food{
 		name:  name,
 		image: ebiten.NewImageFromImage(img),

@@ -12,6 +12,7 @@ func main() {
 
 	ebiten.SetWindowSize(foodzy.ScreenWidth, foodzy.ScreenHeight)
 	ebiten.SetWindowTitle(foodzy.GameName)
+
 	if err := ebiten.RunGame(game); err != nil {
 		log.Fatal(err)
 	}
