@@ -18,9 +18,10 @@ func NewMovementSystem(manager *entities.Manager) *MovementSystem {
 
 func (s *MovementSystem) Update() error {
 
-	entities := s.manager.Query(&components.Velocity{}, &components.Position{})
+	entities := s.manager.QueryByComponents(&components.Velocity{}, &components.Position{})
 
 	for _, entity := range entities {
+
 		velocity := entity.GetComponent(&components.Velocity{}).(*components.Velocity)
 		position := entity.GetComponent(&components.Position{}).(*components.Position)
 

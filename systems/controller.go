@@ -20,7 +20,7 @@ func (s *ControllerSystem) Draw(image *ebiten.Image) { /* nothing to do */ }
 
 func (s *ControllerSystem) Update() error {
 
-	entities := s.manager.Query(&components.KeyboardMover{}, &components.Sprite{}, &components.Position{})
+	entities := s.manager.QueryByComponents(&components.KeyboardMover{}, &components.Sprite{}, &components.Position{})
 
 	if ebiten.IsKeyPressed(ebiten.KeyLeft) {
 

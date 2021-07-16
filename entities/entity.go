@@ -10,12 +10,12 @@ import (
 type Entity struct {
 	Active     bool
 	components []components.Component
-	Id         string
+	Tag        string
 }
 
 func NewEntity(name string, active bool) *Entity {
 	return &Entity{
-		Id:     name,
+		Tag:    name,
 		Active: active,
 	}
 }

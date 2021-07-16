@@ -14,7 +14,7 @@ func (s Sprite) ID() string {
 	return s.name
 }
 
-func NewSprite(name string, img []byte) *Sprite {
+func NewSprite(tag string, img []byte) *Sprite {
 	sprite, _ := utils.LoadImage(img)
-	return &Sprite{name: name, Image: sprite}
+	return &Sprite{name: tag, Image: sprite}
 }

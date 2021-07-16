@@ -6,5 +6,5 @@ import (
 
 type System interface {
 	Draw(image *ebiten.Image)
-	Update()
+	Update() error
 }

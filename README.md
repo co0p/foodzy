@@ -17,6 +17,11 @@ Increase of difficulty
 based on your nutrition levels the plate changes form, or your movements become slower.
 
 
+current status
+---------------
+![current status](/docs/game.png)
+
+
 resources
 ----------
 

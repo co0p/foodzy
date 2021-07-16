@@ -7,19 +7,22 @@ import (
 )
 
 const (
-	ScreenWidth  int    = 800
-	ScreenHeight int    = 600
-	GameName     string = "Foodzy"
+	ScreenWidth    int    = 800
+	ScreenHeight   int    = 600
+	GameName       string = "Foodzy"
+	SpawnFrequency int    = 40
 )
 
 type Game struct {
 	entityManager *entities.Manager
 
 	movementSystem   *systems.MovementSystem
+	foodSystem       *systems.FoodManager
 	controllerSystem *systems.ControllerSystem
 	renderSystem     *systems.RenderSystem
 
-	soundSystem *systems.SoundSystem
+	soundSystem   *systems.SoundSystem
+	cleanupSystem *systems.CleanupSystem
 }
 
 func NewGame() *Game {
@@ -34,12 +37,17 @@ func NewGame() *Game {
 		controllerSystem: systems.NewControllerSystem(&entityManager, ScreenWidth, ScreenHeight),
 		renderSystem:     systems.NewRenderSystem(&entityManager),
 		soundSystem:      systems.NewSoundSystem(),
+		foodSystem:       systems.NewFoodSystem(&entityManager, SpawnFrequency, ScreenWidth),
+		cleanupSystem:    systems.NewCleanupSystem(&entityManager, 100, ScreenHeight),
 	}
 }
 
 func (g *Game) Update() error {
 	err := g.controllerSystem.Update()
+	err = g.foodSystem.Update()
 	err = g.movementSystem.Update()
+
+	err = g.cleanupSystem.Update()
 	return err
 }
 

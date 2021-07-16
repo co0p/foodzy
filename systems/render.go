@@ -15,7 +15,7 @@ func NewRenderSystem(manager *entities.Manager) *RenderSystem {
 }
 
 func (s *RenderSystem) Draw(screen *ebiten.Image) {
-	entities := s.manager.Query(&components.Position{}, &components.Sprite{})
+	entities := s.manager.QueryByComponents(&components.Position{}, &components.Sprite{})
 
 	for _, entity := range entities {
 		position := entity.GetComponent(&components.Position{}).(*components.Position)
