@@ -13,9 +13,9 @@ type Entity struct {
 	Tag        string
 }
 
-func NewEntity(name string, active bool) *Entity {
+func NewEntity(tag string, active bool) *Entity {
 	return &Entity{
-		Tag:    name,
+		Tag:    tag,
 		Active: active,
 	}
 }

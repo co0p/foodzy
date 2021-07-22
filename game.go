@@ -20,6 +20,7 @@ type Game struct {
 	foodSystem       *systems.FoodManager
 	controllerSystem *systems.ControllerSystem
 	renderSystem     *systems.RenderSystem
+	collisionSystem  *systems.CollisionSystem
 
 	soundSystem   *systems.SoundSystem
 	cleanupSystem *systems.CleanupSystem
@@ -38,6 +39,7 @@ func NewGame() *Game {
 		renderSystem:     systems.NewRenderSystem(&entityManager),
 		soundSystem:      systems.NewSoundSystem(),
 		foodSystem:       systems.NewFoodSystem(&entityManager, SpawnFrequency, ScreenWidth),
+		collisionSystem:  systems.NewCollisionSystem(&entityManager),
 		cleanupSystem:    systems.NewCleanupSystem(&entityManager, 100, ScreenHeight),
 	}
 }
@@ -46,6 +48,7 @@ func (g *Game) Update() error {
 	err := g.controllerSystem.Update()
 	err = g.foodSystem.Update()
 	err = g.movementSystem.Update()
+	err = g.collisionSystem.Update()
 
 	err = g.cleanupSystem.Update()
 	return err
