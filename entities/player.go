@@ -20,6 +20,7 @@ func NewPlayer(ScreenWidth int, ScreenHeight int) *Entity {
 	entity.AddComponent(&components.Dimension{Width: float64(width), Height: float64(height)})
 	entity.AddComponent(&components.KeyboardMover{Speed: 5.0})
 	entity.AddComponent(&components.Collision{})
+	entity.AddComponent(&components.Nutrient{})
 
 	return entity
 }

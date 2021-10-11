@@ -18,6 +18,11 @@ func (s *RenderSystem) Draw(screen *ebiten.Image) {
 	entities := s.manager.QueryByComponents(&components.Position{}, &components.Dimension{}, &components.Sprite{})
 
 	for _, entity := range entities {
+
+		if !entity.Active {
+			continue
+		}
+
 		position := entity.GetComponent(&components.Position{}).(*components.Position)
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Translate(position.X, position.Y)

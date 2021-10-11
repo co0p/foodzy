@@ -33,11 +33,15 @@ func (c *CollisionSystem) Update() error {
 		height: playerDim.Height,
 	}
 
+	playerNutrients := player.GetComponent(&components.Nutrient{}).(*components.Nutrient)
+
 	otherEntities := c.manager.QueryByComponents(&components.Collision{}, &components.Position{})
 	for _, entity := range otherEntities {
 		if player == entity {
 			continue
 		}
+
+		entityNutrients := entity.GetComponent(&components.Nutrient{}).(*components.Nutrient)
 
 		entityPos := entity.GetComponent(&components.Position{}).(*components.Position)
 		entityDim := entity.GetComponent(&components.Dimension{}).(*components.Dimension)
@@ -48,8 +52,17 @@ func (c *CollisionSystem) Update() error {
 			height: entityDim.Height,
 		}
 
-		if c.AABBCollision(playerBox, entityBox) {
-			fmt.Println("COLLISSSION")
+		if c.AABBCollision(playerBox, entityBox) && entity.Active {
+			entity.Active = false
+			playerNutrients.Fat += entityNutrients.Fat
+			playerNutrients.Water += entityNutrients.Water
+			playerNutrients.Carbohydrates += entityNutrients.Carbohydrates
+			playerNutrients.Minerals += entityNutrients.Minerals
+			playerNutrients.Protein += entityNutrients.Protein
+			playerNutrients.Vitamins += entityNutrients.Vitamins
+
+			fmt.Printf("COLLISSSION: %v\n", playerNutrients)
+
 		}
 	}
 
