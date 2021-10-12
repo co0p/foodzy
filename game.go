@@ -36,6 +36,10 @@ func NewGame() *Game {
 
 	entityManager.AddEntity(entities.NewScore("Water", components.Nutrient{Water: 1}))
 	entityManager.AddEntity(entities.NewScore("Carbs", components.Nutrient{Carbohydrates: 1}))
+	entityManager.AddEntity(entities.NewScore("Protein", components.Nutrient{Protein: 1}))
+	entityManager.AddEntity(entities.NewScore("Fat", components.Nutrient{Fat: 1}))
+	entityManager.AddEntity(entities.NewScore("Vitamins", components.Nutrient{Vitamins: 1}))
+	entityManager.AddEntity(entities.NewScore("Minerals", components.Nutrient{Minerals: 1}))
 
 	return &Game{
 		entityManager:    &entityManager,

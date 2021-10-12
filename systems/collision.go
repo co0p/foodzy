@@ -60,9 +60,6 @@ func (c *CollisionSystem) Update() error {
 			playerNutrients.Minerals += entityNutrients.Minerals
 			playerNutrients.Protein += entityNutrients.Protein
 			playerNutrients.Vitamins += entityNutrients.Vitamins
-
-			fmt.Printf("COLLISSSION: %v\n", playerNutrients)
-
 		}
 	}
 

@@ -28,7 +28,7 @@ func NewScoreSystem(manager *entities.Manager, width int, height int) *ScoreSyst
 	}
 
 	font, err := opentype.NewFace(tt, &opentype.FaceOptions{
-		Size:    24,
+		Size:    16,
 		DPI:     72,
 		Hinting: font.HintingFull,
 	})
