@@ -1,7 +1,12 @@
 package components
 
+import (
+	"image/color"
+)
+
 type Text struct {
-	Text string
+	Value string
+	Color color.Color
 }
 
 func (p Text) ID() string {

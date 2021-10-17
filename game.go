@@ -20,9 +20,11 @@ type Game struct {
 	movementSystem   *systems.MovementSystem
 	foodSystem       *systems.FoodManager
 	controllerSystem *systems.ControllerSystem
-	renderSystem     *systems.RenderSystem
 	collisionSystem  *systems.CollisionSystem
 	scoreSystem      *systems.ScoreSystem
+
+	spriteRenderSystem *systems.SpriteRenderSystem
+	textRenderSystem   *systems.TextRenderSystem
 
 	soundSystem   *systems.SoundSystem
 	cleanupSystem *systems.CleanupSystem
@@ -34,23 +36,23 @@ func NewGame() *Game {
 	entityManager.AddEntity(entities.NewBackground())
 	entityManager.AddEntity(entities.NewPlayer(ScreenWidth, ScreenHeight))
 
-	entityManager.AddEntity(entities.NewScore("Water", components.Nutrient{Water: 1}))
-	entityManager.AddEntity(entities.NewScore("Carbs", components.Nutrient{Carbohydrates: 1}))
-	entityManager.AddEntity(entities.NewScore("Protein", components.Nutrient{Protein: 1}))
-	entityManager.AddEntity(entities.NewScore("Fat", components.Nutrient{Fat: 1}))
-	entityManager.AddEntity(entities.NewScore("Vitamins", components.Nutrient{Vitamins: 1}))
-	entityManager.AddEntity(entities.NewScore("Minerals", components.Nutrient{Minerals: 1}))
+	scores := constructScores()
+	for _, v := range scores {
+		entityManager.AddEntity(v)
+	}
 
 	return &Game{
-		entityManager:    &entityManager,
-		movementSystem:   systems.NewMovementSystem(&entityManager),
-		controllerSystem: systems.NewControllerSystem(&entityManager, ScreenWidth, ScreenHeight),
-		renderSystem:     systems.NewRenderSystem(&entityManager),
-		soundSystem:      systems.NewSoundSystem(),
-		foodSystem:       systems.NewFoodSystem(&entityManager, SpawnFrequency, ScreenWidth),
-		collisionSystem:  systems.NewCollisionSystem(&entityManager),
-		scoreSystem:      systems.NewScoreSystem(&entityManager, ScreenWidth, ScreenHeight),
-		cleanupSystem:    systems.NewCleanupSystem(&entityManager, 100, ScreenHeight),
+		entityManager:      &entityManager,
+		movementSystem:     systems.NewMovementSystem(&entityManager),
+		controllerSystem:   systems.NewControllerSystem(&entityManager, ScreenWidth, ScreenHeight),
+		soundSystem:        systems.NewSoundSystem(),
+		foodSystem:         systems.NewFoodSystem(&entityManager, SpawnFrequency, ScreenWidth),
+		collisionSystem:    systems.NewCollisionSystem(&entityManager),
+		scoreSystem:        systems.NewScoreSystem(&entityManager),
+		spriteRenderSystem: systems.NewSpriteRenderSystem(&entityManager),
+		textRenderSystem:   systems.NewTextRenderSystem(&entityManager),
+
+		cleanupSystem: systems.NewCleanupSystem(&entityManager, 100, ScreenHeight),
 	}
 }
 
@@ -66,10 +68,28 @@ func (g *Game) Update() error {
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
-	g.renderSystem.Draw(screen)
-	g.scoreSystem.Draw(screen)
+	g.spriteRenderSystem.Draw(screen)
+	g.textRenderSystem.Draw(screen)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
 	return ScreenWidth, ScreenHeight
+}
+
+func constructScores() []*entities.Entity {
+	scores := []*entities.Entity{}
+	scoreCount := 6
+
+	padding := 20
+	xOffset := float64((ScreenWidth/scoreCount - padding) - padding)
+	yPosition := float64(ScreenHeight - padding)
+
+	scores = append(scores, entities.NewScore("Water", components.Nutrient{Water: 1}, xOffset, yPosition))
+	scores = append(scores, entities.NewScore("Carbs", components.Nutrient{Carbohydrates: 1}, xOffset*2, yPosition))
+	scores = append(scores, entities.NewScore("Protein", components.Nutrient{Protein: 1}, xOffset*3, yPosition))
+	scores = append(scores, entities.NewScore("Fat", components.Nutrient{Fat: 1}, xOffset*4, yPosition))
+	scores = append(scores, entities.NewScore("Vitamins", components.Nutrient{Vitamins: 1}, xOffset*5, yPosition))
+	scores = append(scores, entities.NewScore("Minerals", components.Nutrient{Minerals: 1}, xOffset*6, yPosition))
+
+	return scores
 }
