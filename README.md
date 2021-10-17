@@ -19,7 +19,7 @@ based on your nutrition levels the plate changes form, or your movements become 
 
 current status
 ---------------
-![current status](/docs/game.png)
+![current status](/docs/foodzy.gif)
 
 
 resources
