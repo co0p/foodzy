@@ -42,3 +42,7 @@ func (elem *Entity) GetComponent(withType components.Component) components.Compo
 	}
 	return nil
 }
+
+func (e *Entity) String() string {
+	return fmt.Sprintf("active: %v, components: %d", e.Active, len(e.components))
+}

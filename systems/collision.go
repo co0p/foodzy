@@ -35,7 +35,7 @@ func (c *CollisionSystem) Update() error {
 
 	playerNutrients := player.GetComponent(&components.Nutrient{}).(*components.Nutrient)
 
-	otherEntities := c.manager.QueryByComponents(&components.Collision{}, &components.Position{})
+	otherEntities := c.manager.QueryByComponents(&components.Nutrient{}, &components.Collision{}, &components.Position{})
 	for _, entity := range otherEntities {
 		if player == entity {
 			continue

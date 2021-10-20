@@ -5,6 +5,8 @@ import (
 	"github.com/co0p/foodzy/entities"
 	"github.com/co0p/foodzy/systems"
 	"github.com/hajimehoshi/ebiten/v2"
+	"math/rand"
+	"time"
 )
 
 const (
@@ -18,7 +20,7 @@ type Game struct {
 	entityManager *entities.Manager
 
 	movementSystem   *systems.MovementSystem
-	foodSystem       *systems.FoodManager
+	foodSystem       *systems.FoodSpawningSystem
 	controllerSystem *systems.ControllerSystem
 	collisionSystem  *systems.CollisionSystem
 	scoreSystem      *systems.ScoreSystem
@@ -31,10 +33,12 @@ type Game struct {
 }
 
 func NewGame() *Game {
+	rand.Seed(time.Now().UnixNano())
 
 	entityManager := entities.Manager{}
 	entityManager.AddEntity(entities.NewBackground())
 	entityManager.AddEntity(entities.NewPlayer(ScreenWidth, ScreenHeight))
+	entityManager.AddEntity(entities.NewFoodSpawner(SpawnFrequency))
 
 	scores := constructScores()
 	for _, v := range scores {
@@ -46,7 +50,7 @@ func NewGame() *Game {
 		movementSystem:     systems.NewMovementSystem(&entityManager),
 		controllerSystem:   systems.NewControllerSystem(&entityManager, ScreenWidth, ScreenHeight),
 		soundSystem:        systems.NewSoundSystem(),
-		foodSystem:         systems.NewFoodSystem(&entityManager, SpawnFrequency, ScreenWidth),
+		foodSystem:         systems.NewFoodSpawningSystem(&entityManager, ScreenWidth),
 		collisionSystem:    systems.NewCollisionSystem(&entityManager),
 		scoreSystem:        systems.NewScoreSystem(&entityManager),
 		spriteRenderSystem: systems.NewSpriteRenderSystem(&entityManager),
