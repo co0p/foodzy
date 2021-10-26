@@ -82,18 +82,18 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 
 func constructScores() []*entities.Entity {
 	scores := []*entities.Entity{}
-	scoreCount := 6
+	scoreCount := 8
 
 	padding := 20
 	xOffset := float64((ScreenWidth/scoreCount - padding) - padding)
 	yPosition := float64(ScreenHeight - padding)
-
-	scores = append(scores, entities.NewScore("Water", components.Nutrient{Water: 1}, xOffset, yPosition))
-	scores = append(scores, entities.NewScore("Carbs", components.Nutrient{Carbohydrates: 1}, xOffset*2, yPosition))
-	scores = append(scores, entities.NewScore("Protein", components.Nutrient{Protein: 1}, xOffset*3, yPosition))
-	scores = append(scores, entities.NewScore("Fat", components.Nutrient{Fat: 1}, xOffset*4, yPosition))
-	scores = append(scores, entities.NewScore("Vitamins", components.Nutrient{Vitamins: 1}, xOffset*5, yPosition))
-	scores = append(scores, entities.NewScore("Minerals", components.Nutrient{Minerals: 1}, xOffset*6, yPosition))
-
+	scores = append(scores, entities.NewScore("Corn", components.Nutrient{Corn: 1.0}, xOffset, yPosition))
+	scores = append(scores, entities.NewScore("Dairy", components.Nutrient{Dairy: 1.0}, xOffset*2, yPosition))
+	scores = append(scores, entities.NewScore("Drink", components.Nutrient{Drink: 1.0}, xOffset*3, yPosition))
+	scores = append(scores, entities.NewScore("Fish", components.Nutrient{Fish: 1.0}, xOffset*4, yPosition))
+	scores = append(scores, entities.NewScore("Meat", components.Nutrient{Meat: 1.0}, xOffset*5, yPosition))
+	scores = append(scores, entities.NewScore("Treat", components.Nutrient{Treat: 1.0}, xOffset*6, yPosition))
+	scores = append(scores, entities.NewScore("Fruit", components.Nutrient{Fruit: 1.0}, xOffset*7, yPosition))
+	scores = append(scores, entities.NewScore("Vegetable", components.Nutrient{Vegetable: 1.0}, xOffset*8, yPosition))
 	return scores
 }

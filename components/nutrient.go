@@ -1,34 +1,43 @@
 package components
 
 type Nutrient struct {
-	Water         float64
-	Carbohydrates float64
-	Protein       float64
-	Fat           float64
-	Vitamins      float64
-	Minerals      float64
+	Corn      float64
+	Dairy     float64
+	Drink     float64
+	Fish      float64
+	Meat      float64
+	Treat     float64
+	Fruit     float64
+	Vegetable float64
+	KCal      float64
 }
 
 func (n Nutrient) ID() string {
-	return ""
+	panic("")
 }
 
-func (n *Nutrient) Add(other Nutrient) {
-	n.Protein = Floor(n.Protein + other.Protein)
-	n.Fat = Floor(n.Fat + other.Fat)
-	n.Water = Floor(n.Water + other.Water)
-	n.Minerals = Floor(n.Minerals + other.Minerals)
-	n.Vitamins = Floor(n.Vitamins + other.Vitamins)
-	n.Carbohydrates = Floor(n.Carbohydrates + other.Carbohydrates)
+func (n *Nutrient) Add(other *Nutrient) {
+	n.Corn = Floor(n.Corn + other.Corn)
+	n.Dairy = Floor(n.Dairy + other.Dairy)
+	n.Drink = Floor(n.Drink + other.Drink)
+	n.Fish = Floor(n.Fish + other.Fish)
+	n.Meat = Floor(n.Meat + other.Meat)
+	n.Treat = Floor(n.Treat + other.Treat)
+	n.Fruit = Floor(n.Fruit + other.Fruit)
+	n.Vegetable = Floor(n.Vegetable + other.Vegetable)
+	n.KCal = Floor(n.KCal + other.KCal)
 }
 
 func (n *Nutrient) MatMul(other *Nutrient) float64 {
-	return n.Fat*other.Fat +
-		n.Water*other.Water +
-		n.Carbohydrates*other.Carbohydrates +
-		n.Minerals*other.Minerals +
-		n.Protein*other.Protein +
-		n.Vitamins*other.Vitamins
+	return n.Corn*other.Corn +
+		n.Dairy*other.Dairy +
+		n.Drink*other.Drink +
+		n.Fish*other.Fish +
+		n.Meat*other.Meat +
+		n.Treat*other.Treat +
+		n.Fruit*other.Fruit +
+		n.Vegetable*other.Vegetable +
+		n.KCal*other.KCal
 }
 
 func Floor(x float64) float64 {

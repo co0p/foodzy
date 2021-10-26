@@ -21,6 +21,17 @@ func NewPlayer(ScreenWidth int, ScreenHeight int) *Entity {
 	entity.AddComponent(&components.KeyboardMover{Speed: 5.0})
 	entity.AddComponent(&components.Collision{})
 	entity.AddComponent(&components.Nutrient{})
+	entity.AddComponent(&components.Consumption{
+		Corn:      components.ConsumptionDefaultRate,
+		Dairy:     components.ConsumptionDefaultRate,
+		Drink:     components.ConsumptionDefaultRate,
+		Fish:      components.ConsumptionDefaultRate,
+		Meat:      components.ConsumptionDefaultRate,
+		Treat:     components.ConsumptionDefaultRate,
+		Fruit:     components.ConsumptionDefaultRate,
+		Vegetable: components.ConsumptionDefaultRate,
+		KCal:      components.ConsumptionDefaultRate,
+	})
 
 	return entity
 }

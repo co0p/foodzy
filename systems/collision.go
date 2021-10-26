@@ -33,15 +33,11 @@ func (c *CollisionSystem) Update() error {
 		height: playerDim.Height,
 	}
 
-	playerNutrients := player.GetComponent(&components.Nutrient{}).(*components.Nutrient)
-
 	otherEntities := c.manager.QueryByComponents(&components.Nutrient{}, &components.Collision{}, &components.Position{})
 	for _, entity := range otherEntities {
-		if player == entity {
+		if player == entity || !entity.Active {
 			continue
 		}
-
-		entityNutrients := entity.GetComponent(&components.Nutrient{}).(*components.Nutrient)
 
 		entityPos := entity.GetComponent(&components.Position{}).(*components.Position)
 		entityDim := entity.GetComponent(&components.Dimension{}).(*components.Dimension)
@@ -52,14 +48,11 @@ func (c *CollisionSystem) Update() error {
 			height: entityDim.Height,
 		}
 
-		if c.AABBCollision(playerBox, entityBox) && entity.Active {
+		if playerBox.AABBCollision(entityBox) {
 			entity.Active = false
-			playerNutrients.Fat += entityNutrients.Fat
-			playerNutrients.Water += entityNutrients.Water
-			playerNutrients.Carbohydrates += entityNutrients.Carbohydrates
-			playerNutrients.Minerals += entityNutrients.Minerals
-			playerNutrients.Protein += entityNutrients.Protein
-			playerNutrients.Vitamins += entityNutrients.Vitamins
+			playerNutrients := player.GetComponent(&components.Nutrient{}).(*components.Nutrient)
+			entityNutrients := entity.GetComponent(&components.Nutrient{}).(*components.Nutrient)
+			playerNutrients.Add(entityNutrients)
 		}
 	}
 
@@ -73,7 +66,7 @@ type boundingBox struct {
 	height float64
 }
 
-func (c *CollisionSystem) AABBCollision(rect1 boundingBox, rect2 boundingBox) bool {
+func (rect1 *boundingBox) AABBCollision(rect2 boundingBox) bool {
 
 	return rect1.x < rect2.x+rect2.width &&
 		rect1.x+rect1.width > rect2.x &&

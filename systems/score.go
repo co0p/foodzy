@@ -9,8 +9,6 @@ import (
 	"image/color"
 )
 
-const NutrientsConsumptionRate = -0.05
-
 type ScoreSystem struct {
 	manager      *entities.Manager
 	ScreenHeight int
@@ -33,15 +31,19 @@ func (s *ScoreSystem) Update() error {
 	player := e[0]
 
 	currentNutrients := player.GetComponent(&components.Nutrient{}).(*components.Nutrient)
+	consumption := player.GetComponent(&components.Consumption{}).(*components.Consumption)
 	change := components.Nutrient{
-		Water:         NutrientsConsumptionRate,
-		Carbohydrates: NutrientsConsumptionRate,
-		Protein:       NutrientsConsumptionRate,
-		Fat:           NutrientsConsumptionRate,
-		Vitamins:      NutrientsConsumptionRate,
-		Minerals:      NutrientsConsumptionRate,
+		Corn:      consumption.Corn,
+		Dairy:     consumption.Dairy,
+		Drink:     consumption.Drink,
+		Fish:      consumption.Fish,
+		Meat:      consumption.Meat,
+		Treat:     consumption.Treat,
+		Fruit:     consumption.Fruit,
+		Vegetable: consumption.Vegetable,
+		KCal:      consumption.KCal,
 	}
-	currentNutrients.Add(change)
+	currentNutrients.Add(&change)
 
 	// update colors of score
 	scores := s.manager.QueryByComponents(&components.Nutrient{}, &components.Text{})
@@ -60,23 +62,23 @@ func deriveFontColor(level float64) color.Color {
 
 	c := colornames.Darkred
 
-	if level >= 10 {
+	if level >= 1 {
 		c = colornames.Red
 	}
 
-	if level >= 20 {
+	if level >= 2 {
 		c = colornames.Darkorange
 	}
 
-	if level >= 30 {
+	if level >= 3 {
 		c = colornames.Blue
 	}
 
-	if level >= 40 {
+	if level >= 4 {
 		c = colornames.Green
 	}
 
-	if level >= 50 {
+	if level >= 5 {
 		c = colornames.Darkgreen
 	}
 
