@@ -25,7 +25,7 @@ func (c *CollisionSystem) Update() error {
 	}
 	player := e[0]
 	playerPos := player.GetComponent(&components.Position{}).(*components.Position)
-	playerDim := player.GetComponent(&components.Dimension{}).(*components.Dimension)
+	playerDim := player.GetComponent(&components.Collision{}).(*components.Collision)
 	playerBox := boundingBox{
 		x:      playerPos.X,
 		y:      playerPos.Y,
@@ -40,7 +40,7 @@ func (c *CollisionSystem) Update() error {
 		}
 
 		entityPos := entity.GetComponent(&components.Position{}).(*components.Position)
-		entityDim := entity.GetComponent(&components.Dimension{}).(*components.Dimension)
+		entityDim := entity.GetComponent(&components.Collision{}).(*components.Collision)
 		entityBox := boundingBox{
 			x:      entityPos.X,
 			y:      entityPos.Y,
@@ -67,7 +67,6 @@ type boundingBox struct {
 }
 
 func (rect1 *boundingBox) AABBCollision(rect2 boundingBox) bool {
-
 	return rect1.x < rect2.x+rect2.width &&
 		rect1.x+rect1.width > rect2.x &&
 		rect1.y < rect2.y+rect2.height &&

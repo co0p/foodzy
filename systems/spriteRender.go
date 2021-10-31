@@ -15,7 +15,7 @@ func NewSpriteRenderSystem(manager *entities.Manager) *SpriteRenderSystem {
 }
 
 func (s *SpriteRenderSystem) Draw(screen *ebiten.Image) {
-	candidates := s.manager.QueryByComponents(&components.Position{}, &components.Dimension{}, &components.Sprite{})
+	candidates := s.manager.QueryByComponents(&components.Position{}, &components.Sprite{})
 
 	for _, e := range candidates {
 

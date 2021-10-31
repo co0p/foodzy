@@ -25,7 +25,7 @@ type Game struct {
 	collisionSystem  *systems.CollisionSystem
 	scoreSystem      *systems.ScoreSystem
 
-	spriteRenderSystem *systems.SpriteRenderSystem
+	spriteRenderSystem *systems.spriteRenderSystem
 	textRenderSystem   *systems.TextRenderSystem
 
 	soundSystem   *systems.SoundSystem

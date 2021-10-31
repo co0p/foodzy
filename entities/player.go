@@ -17,9 +17,8 @@ func NewPlayer(ScreenWidth int, ScreenHeight int) *Entity {
 	sprite := components.NewSprite("player", assets.Plate)
 	width, height := sprite.Image.Size()
 	entity.AddComponent(sprite)
-	entity.AddComponent(&components.Dimension{Width: float64(width), Height: float64(height)})
 	entity.AddComponent(&components.KeyboardMover{Speed: 5.0})
-	entity.AddComponent(&components.Collision{})
+	entity.AddComponent(&components.Collision{Width: float64(width), Height: float64(height)})
 	entity.AddComponent(&components.Nutrient{})
 	entity.AddComponent(&components.Consumption{
 		Corn:      components.ConsumptionDefaultRate,

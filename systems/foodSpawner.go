@@ -86,15 +86,14 @@ func newFood(width int, yVelocity float64) *entities.Entity {
 	entity := entities.Entity{Active: true}
 
 	sprite := components.NewSprite(candidate.name, candidate.asset)
-	spriteWidth, spriteHeight := sprite.Image.Size()
+	w, h := sprite.Image.Size()
 
 	entity.AddComponent(sprite)
 	entity.AddComponent(&candidate.nutrient)
 
 	entity.AddComponent(&components.Position{X: float64(posX), Y: -100})
-	entity.AddComponent(&components.Dimension{Width: float64(spriteWidth), Height: float64(spriteHeight)})
 	entity.AddComponent(&components.Velocity{X: 0, Y: yVelocity})
-	entity.AddComponent(&components.Collision{})
+	entity.AddComponent(&components.Collision{Width: float64(w), Height: float64(h)})
 
 	return &entity
 }
