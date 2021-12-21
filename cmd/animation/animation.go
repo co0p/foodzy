@@ -1,8 +1,6 @@
 package main
 
 import (
-	"github.com/co0p/foodzy/entities"
-	"github.com/co0p/foodzy/systems"
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
@@ -14,9 +12,9 @@ import (
 type AnimationExample struct {
 	ScreenWidth, ScreenHeight int
 	Title                     string
-	entityManager             *entities.Manager
-	animationSystem           *systems.AnimationSystem
-	spriteRenderer            *systems.SpriteRenderSystem
+	entityManager             *entity.Manager
+	animationSystem           *system.AnimationSystem
+	spriteRenderer            *system.SpriteRenderSystem
 }
 
 func (a *AnimationExample) Update() error {

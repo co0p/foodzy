@@ -1,9 +1,6 @@
 package main
 
 import (
-	"github.com/co0p/foodzy/components"
-	"github.com/co0p/foodzy/entities"
-	"github.com/co0p/foodzy/systems"
 	"github.com/co0p/foodzy/utils"
 	"github.com/hajimehoshi/ebiten/v2"
 )
@@ -11,36 +8,54 @@ import (
 const ScreenWidth = 500
 const ScreenHeight = 500
 
+type ComponentType string
+
+const (
+	Transform  ComponentType = "TRANSFORM"
+	SpriteType               = "SPRITE"
+	Animation                = "ANIMATION"
+)
+
+type AnimationComponent struct {
+	Frames            []*ebiten.Image
+	CurrentFrameIndex int
+	CurrentFrame      *ebiten.Image
+	Count             float64
+	AnimationSpeed    float64
+}
+
+func (a AnimationComponent) Type() ComponentType { return Animation }
+
 func main() {
 	sprites, _ := utils.LoadSpriteSheet(SpriteSheet, 200, 80, 8)
 
-	animation := components.NewAnimation(0.2, sprites)
-	sprite := components.Sprite{Image: animation.GetCurrentFrame()}
+	animation := component.NewAnimation(0.2, sprites)
+	sprite := component.Sprite{Image: animation.GetCurrentFrame()}
 	w, h := sprite.Image.Size()
 
-	position := components.Position{X: (ScreenWidth - float64(w)) / 2, Y: (ScreenHeight - float64(h)) / 2}
+	position := component.Position{X: (ScreenWidth - float64(w)) / 2, Y: (ScreenHeight - float64(h)) / 2}
 
-	entity := entities.NewEntity("animation", true)
+	entity := entity.NewEntity("animation", true)
 	entity.AddComponent(animation)
 	entity.AddComponent(&sprite)
 	entity.AddComponent(&position)
 
-	entityManager := entities.Manager{}
+	entityManager := entity.Manager{}
 	entityManager.AddEntity(entity)
 
-	spriteRenderSystem := systems.NewSpriteRenderSystem(&entityManager)
-	animationSystem := systems.NewAnimationSystem(&entityManager)
+	spriteRenderSystem := system.NewSpriteRenderSystem(&entityManager)
+	animationSystem := system.NewAnimationSystem(&entityManager)
 
 	example := AnimationExample{
-		ScreenHeight:    ScreenHeight,
-		ScreenWidth:     ScreenHeight,
-		Title:           "Animation example",
+		// AnimationExample satisfies the ebiten.Game interface
 		entityManager:   &entityManager,
 		animationSystem: animationSystem,
 		spriteRenderer:  spriteRenderSystem,
 	}
 
-	ebiten.SetWindowSize(example.ScreenWidth, example.ScreenHeight)
-	ebiten.SetWindowTitle(example.Title)
-	_ = ebiten.RunGame(&example)
+	ebiten.SetWindowSize(500, 500)
+	ebiten.SetWindowTitle("Animation example")
+	if err := ebiten.RunGame(&example); err != nil {
+		panic(err)
+	}
 }
