@@ -49,7 +49,7 @@ func NewGame() *Game {
 		movementSystem:     system.NewMovementSystem(&entityManager),
 		controllerSystem:   system.NewControllerSystem(&entityManager, ScreenWidth, ScreenHeight),
 		soundSystem:        system.NewSoundSystem(),
-		foodSystem:         system.NewFoodSpawningSystem(&entityManager, ScreenWidth, -100),
+		foodSystem:         system.NewFoodSpawningSystem(&entityManager, ScreenWidth),
 		collisionSystem:    system.NewCollisionSystem(&entityManager),
 		scoreSystem:        system.NewScoreSystem(&entityManager),
 		spriteRenderSystem: system.NewSpriteRenderSystem(&entityManager),

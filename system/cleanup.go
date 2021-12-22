@@ -23,25 +23,25 @@ func NewCleanupSystem(manager *entity.Manager, frequency int, screenHeight int) 
 	}
 }
 
-func (e *CleanupSystem) Draw(image *ebiten.Image) {}
+func (s *CleanupSystem) Draw(image *ebiten.Image) {}
 
-func (e *CleanupSystem) Update() error {
+func (s *CleanupSystem) Update() error {
 
-	candidates := e.manager.QueryByComponents(component.PositionType)
-	for _, entity := range candidates {
-		position := entity.GetComponent(component.PositionType).(*component.Position)
+	candidates := s.manager.QueryByComponents(component.TransformType)
+	for _, e := range candidates {
+		position := e.GetComponent(component.TransformType).(*component.Transform)
 
-		if int(position.Y) > e.screenHeight {
-			entity.Active = false
+		if int(position.Y) > s.screenHeight {
+			e.Active = false
 		}
 	}
 
-	if e.coolDown > 0 {
-		e.coolDown--
+	if s.coolDown > 0 {
+		s.coolDown--
 		return nil
 	}
 
-	e.manager.RemoveInactive()
-	e.coolDown = e.runFrequency
+	s.manager.RemoveInactive()
+	s.coolDown = s.runFrequency
 	return nil
 }

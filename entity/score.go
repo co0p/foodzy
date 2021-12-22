@@ -6,13 +6,13 @@ import (
 )
 
 func NewScore(text string, nutrient component.Nutrient, posX float64, posY float64) *entity {
-	bg := NewEntity("score", true)
+	e := NewEntity("score", true)
 
-	bg.AddComponent(&component.Position{X: posX, Y: posY})
-	bg.AddComponent(&component.Text{Value: text, Color: color.White})
-	bg.AddComponent(&nutrient)
+	e.AddComponent(&component.Transform{X: posX, Y: posY, Scale: 1})
+	e.AddComponent(&component.Text{Value: text, Color: color.White})
+	e.AddComponent(&nutrient)
 
-	return bg
+	return e
 }
 
 func ConstructScores(ScreenWidth int, ScreenHeight int) []*entity {

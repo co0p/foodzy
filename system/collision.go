@@ -24,28 +24,28 @@ func (c *CollisionSystem) Update() error {
 		panic(fmt.Sprintf("expected one entity with tag 'player', got %v", len(e)))
 	}
 	player := e[0]
-	playerPos := player.GetComponent(component.PositionType).(*component.Position)
+	playerTransform := player.GetComponent(component.TransformType).(*component.Transform)
 	playerDim := player.GetComponent(component.CollisionType).(*component.Collision)
 	playerBox := boundingBox{
-		x:      playerPos.X,
-		y:      playerPos.Y,
-		width:  playerDim.Width,
-		height: playerDim.Height,
+		x:      playerTransform.X,
+		y:      playerTransform.Y,
+		width:  playerDim.Width * playerTransform.Scale,
+		height: playerDim.Height * playerTransform.Scale,
 	}
 
-	otherEntities := c.manager.QueryByComponents(component.NutrientType, component.CollisionType, component.PositionType)
+	otherEntities := c.manager.QueryByComponents(component.NutrientType, component.CollisionType, component.TransformType)
 	for _, entity := range otherEntities {
 		if player == entity || !entity.Active {
 			continue
 		}
 
-		entityPos := entity.GetComponent(component.PositionType).(*component.Position)
+		entityPos := entity.GetComponent(component.TransformType).(*component.Transform)
 		entityDim := entity.GetComponent(component.CollisionType).(*component.Collision)
 		entityBox := boundingBox{
 			x:      entityPos.X,
 			y:      entityPos.Y,
-			width:  entityDim.Width,
-			height: entityDim.Height,
+			width:  entityDim.Width * entityPos.Scale,
+			height: entityDim.Height * entityPos.Scale,
 		}
 
 		if playerBox.AABBCollision(entityBox) {

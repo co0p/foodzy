@@ -9,7 +9,7 @@ func NewBackground() *entity {
 	bg := NewEntity("background", true)
 	sprite := component.NewSprite("background", assets.Background)
 
-	bg.AddComponent(&component.Position{X: 0, Y: 0})
+	bg.AddComponent(&component.Transform{X: 0, Y: 0, Scale: 1})
 	bg.AddComponent(sprite)
 	return bg
 }

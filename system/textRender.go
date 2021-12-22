@@ -34,7 +34,7 @@ func NewTextRenderSystem(manager *entity.Manager) *TextRenderSystem {
 }
 
 func (s *TextRenderSystem) Draw(screen *ebiten.Image) {
-	candidates := s.manager.QueryByComponents(component.TextType, component.PositionType)
+	candidates := s.manager.QueryByComponents(component.TextType, component.TransformType)
 
 	for _, e := range candidates {
 
@@ -43,7 +43,7 @@ func (s *TextRenderSystem) Draw(screen *ebiten.Image) {
 		}
 
 		txt := e.GetComponent(component.TextType).(*component.Text)
-		pos := e.GetComponent(component.PositionType).(*component.Position)
+		pos := e.GetComponent(component.TransformType).(*component.Transform)
 		text.Draw(screen, txt.Value, s.font, int(pos.X), int(pos.Y), txt.Color)
 	}
 }

@@ -15,7 +15,7 @@ func NewSpriteRenderSystem(manager *entity.Manager) *SpriteRenderSystem {
 }
 
 func (s *SpriteRenderSystem) Draw(screen *ebiten.Image) {
-	candidates := s.manager.QueryByComponents(component.PositionType, component.SpriteType)
+	candidates := s.manager.QueryByComponents(component.TransformType, component.SpriteType)
 
 	for _, e := range candidates {
 
@@ -23,11 +23,13 @@ func (s *SpriteRenderSystem) Draw(screen *ebiten.Image) {
 			continue
 		}
 
-		position := e.GetComponent(component.PositionType).(*component.Position)
-		op := &ebiten.DrawImageOptions{}
-		op.GeoM.Translate(position.X, position.Y)
-
+		transform := e.GetComponent(component.TransformType).(*component.Transform)
 		sprite := e.GetComponent(component.SpriteType).(*component.Sprite)
+
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Scale(transform.Scale, transform.Scale)
+		op.GeoM.Translate(transform.X, transform.Y)
+
 		screen.DrawImage(sprite.Image, op)
 	}
 }

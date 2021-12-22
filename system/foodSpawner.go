@@ -46,14 +46,12 @@ var foodList = []FoodDefintion{
 type FoodSpawningSystem struct {
 	manager     *entity.Manager
 	windowWidth int
-	yVelocity   float64
 }
 
-func NewFoodSpawningSystem(manager *entity.Manager, windowWidth int, yVelocity float64) *FoodSpawningSystem {
+func NewFoodSpawningSystem(manager *entity.Manager, windowWidth int) *FoodSpawningSystem {
 	return &FoodSpawningSystem{
 		manager:     manager,
 		windowWidth: windowWidth,
-		yVelocity:   yVelocity,
 	}
 }
 
@@ -76,10 +74,11 @@ func (s *FoodSpawningSystem) Update() error {
 	idx := rand.Intn(len(foodList))
 	candidate := foodList[idx]
 	posX := rand.Intn(s.windowWidth-padding*3) + padding
+	posY := -200
 
 	sprite := component.NewSprite(candidate.name, candidate.asset)
-	position := component.Position{X: float64(posX), Y: -100}
-	velocity := component.Velocity{X: 0, Y: s.yVelocity}
+	position := component.Transform{X: float64(posX), Y: float64(posY), Scale: 0.7}
+	velocity := component.Velocity{X: foodSpawner.Velocity.X, Y: foodSpawner.Velocity.Y}
 
 	food := entity.NewFood(&candidate.nutrient, sprite, &velocity, &position)
 	s.manager.AddEntity(food)

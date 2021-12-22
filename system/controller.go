@@ -20,13 +20,13 @@ func (s *ControllerSystem) Draw(image *ebiten.Image) { /* nothing to do */ }
 
 func (s *ControllerSystem) Update() error {
 
-	entities := s.manager.QueryByComponents(component.KeyboardMoverType, component.SpriteType, component.PositionType)
+	entities := s.manager.QueryByComponents(component.KeyboardMoverType, component.SpriteType, component.TransformType)
 
 	if ebiten.IsKeyPressed(ebiten.KeyLeft) {
 
 		for _, e := range entities {
 
-			position := e.GetComponent(component.PositionType).(*component.Position)
+			position := e.GetComponent(component.TransformType).(*component.Transform)
 			move := e.GetComponent(component.KeyboardMoverType).(*component.KeyboardMover)
 
 			newLeft := position.X - move.Speed
@@ -39,7 +39,7 @@ func (s *ControllerSystem) Update() error {
 	if ebiten.IsKeyPressed(ebiten.KeyRight) {
 		for _, e := range entities {
 
-			position := e.GetComponent(component.PositionType).(*component.Position)
+			position := e.GetComponent(component.TransformType).(*component.Transform)
 			move := e.GetComponent(component.KeyboardMoverType).(*component.KeyboardMover)
 			sprite := e.GetComponent(component.SpriteType).(*component.Sprite)
 			width, _ := sprite.Image.Size()

@@ -6,7 +6,7 @@ type Manager struct {
 	entities []*entity
 }
 
-// NewEntity creates a new entity and adds it to the internal list of entity
+// AddEntity adds the given entity to the internal list of entities
 func (m *Manager) AddEntity(e *entity) {
 	m.entities = append(m.entities, e)
 }
@@ -33,9 +33,9 @@ func (m *Manager) QueryByComponents(types ...component.ComponentType) []*entity 
 
 func (m *Manager) QueryByTag(tag string) []*entity {
 	var candidates []*entity
-	for _, entity := range m.entities {
-		if entity.Tag == tag {
-			candidates = append(candidates, entity)
+	for _, e := range m.entities {
+		if e.Tag == tag {
+			candidates = append(candidates, e)
 		}
 	}
 
