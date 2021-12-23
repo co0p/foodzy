@@ -18,15 +18,15 @@ type SoundSystem struct {
 
 func (s SoundSystem) Draw(image *ebiten.Image) {}
 
-func (s SoundSystem) Update() {}
+func (s SoundSystem) Update() error { return nil }
 
 func NewSoundSystem() *SoundSystem {
+	log.Print("[system.sound] start initializing")
 
 	system := SoundSystem{}
 
-	log.Print("initializing audio ...")
 	system.audioContext = audio.NewContext(AudioSampleRate)
-	src, err := mp3.Decode(system.audioContext, bytes.NewReader(assets.Soundtrack))
+	src, err := mp3.DecodeWithSampleRate(AudioSampleRate, bytes.NewReader(assets.Soundtrack))
 
 	if err != nil {
 		log.Fatal("failed loading soundtrack")
@@ -39,7 +39,7 @@ func NewSoundSystem() *SoundSystem {
 	}
 
 	system.audioPlayer.Play()
-	log.Print("initializing audio ... done")
+	log.Print("[system.sound] initializing done")
 
 	return &system
 }

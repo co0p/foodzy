@@ -1,78 +1,44 @@
 package foodzy
 
 import (
-	"github.com/co0p/foodzy/entity"
-	"github.com/co0p/foodzy/system"
+	"github.com/co0p/foodzy/screen"
 	"github.com/hajimehoshi/ebiten/v2"
 	"math/rand"
 	"time"
 )
 
 const (
-	ScreenWidth    int    = 800
-	ScreenHeight   int    = 600
-	GameName       string = "Foodzy"
-	SpawnFrequency int    = 40
+	ScreenWidth  int    = 800
+	ScreenHeight int    = 600
+	GameName     string = "Foodzy"
 )
 
 type Game struct {
-	entityManager *entity.Manager
-
-	movementSystem   *system.MovementSystem
-	foodSystem       *system.FoodSpawningSystem
-	controllerSystem *system.ControllerSystem
-	collisionSystem  *system.CollisionSystem
-	scoreSystem      *system.ScoreSystem
-
-	spriteRenderSystem *system.SpriteRenderSystem
-	textRenderSystem   *system.TextRenderSystem
-
-	soundSystem   *system.SoundSystem
-	cleanupSystem *system.CleanupSystem
+	screenManager *screen.Manager
 }
 
 func NewGame() *Game {
 	rand.Seed(time.Now().UnixNano())
+	layerManager := screen.NewManager()
 
-	entityManager := entity.Manager{}
-	entityManager.AddEntity(entity.NewBackground())
-	entityManager.AddEntity(entity.NewPlayer(ScreenWidth, ScreenHeight))
-	entityManager.AddEntity(entity.NewFoodSpawner(SpawnFrequency))
+	gameScreen := screen.NewGameScreen(ScreenWidth, ScreenHeight)
 
-	scores := entity.ConstructScores(ScreenWidth, ScreenHeight)
-	for _, v := range scores {
-		entityManager.AddEntity(v)
+	layerManager.AddScreen(gameScreen)
+	if err := layerManager.ActiveScreen(gameScreen.Name()); err != nil {
+		panic("failed to activate screen: " + err.Error())
 	}
 
 	return &Game{
-		entityManager:      &entityManager,
-		movementSystem:     system.NewMovementSystem(&entityManager),
-		controllerSystem:   system.NewControllerSystem(&entityManager, ScreenWidth, ScreenHeight),
-		soundSystem:        system.NewSoundSystem(),
-		foodSystem:         system.NewFoodSpawningSystem(&entityManager, ScreenWidth),
-		collisionSystem:    system.NewCollisionSystem(&entityManager),
-		scoreSystem:        system.NewScoreSystem(&entityManager),
-		spriteRenderSystem: system.NewSpriteRenderSystem(&entityManager),
-		textRenderSystem:   system.NewTextRenderSystem(&entityManager),
-
-		cleanupSystem: system.NewCleanupSystem(&entityManager, 100, ScreenHeight),
+		screenManager: layerManager,
 	}
 }
 
 func (g *Game) Update() error {
-	err := g.controllerSystem.Update()
-	err = g.foodSystem.Update()
-	err = g.movementSystem.Update()
-	err = g.collisionSystem.Update()
-	err = g.scoreSystem.Update()
-
-	err = g.cleanupSystem.Update()
-	return err
+	return g.screenManager.Current.Update()
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
-	g.spriteRenderSystem.Draw(screen)
-	g.textRenderSystem.Draw(screen)
+	g.screenManager.Current.Draw(screen)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
