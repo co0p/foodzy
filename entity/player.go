@@ -7,7 +7,7 @@ import (
 
 const playerSize = 50
 
-func NewPlayer(ScreenWidth int, ScreenHeight int) *entity {
+func NewPlayer(ScreenWidth int, ScreenHeight int) *Entity {
 	entity := NewEntity("player", true)
 
 	entity.AddComponent(&component.Transform{

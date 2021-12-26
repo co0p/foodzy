@@ -19,17 +19,18 @@ type Game struct {
 
 func NewGame() *Game {
 	rand.Seed(time.Now().UnixNano())
-	layerManager := screen.NewManager()
 
+	startScreen := screen.NewStartScreen(ScreenWidth, ScreenHeight)
 	gameScreen := screen.NewGameScreen(ScreenWidth, ScreenHeight)
 
-	layerManager.AddScreen(gameScreen)
-	if err := layerManager.ActiveScreen(gameScreen.Name()); err != nil {
-		panic("failed to activate screen: " + err.Error())
-	}
+	screenManager := screen.NewManager()
+	screenManager.AddScreen(startScreen)
+	screenManager.AddScreen(gameScreen)
+
+	screenManager.ActiveScreen(startScreen.Name())
 
 	return &Game{
-		screenManager: layerManager,
+		screenManager: screenManager,
 	}
 }
 

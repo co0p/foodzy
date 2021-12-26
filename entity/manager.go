@@ -3,18 +3,18 @@ package entity
 import "github.com/co0p/foodzy/component"
 
 type Manager struct {
-	entities []*entity
+	entities []*Entity
 }
 
-// AddEntity adds the given entity to the internal list of entities
-func (m *Manager) AddEntity(e *entity) {
+// AddEntity adds the given Entity to the internal list of entities
+func (m *Manager) AddEntity(e *Entity) {
 	m.entities = append(m.entities, e)
 }
 
-// QueryByComponents returns the set of entity having all provided components
-func (m *Manager) QueryByComponents(types ...component.ComponentType) []*entity {
+// QueryByComponents returns the set of Entity having all provided components
+func (m *Manager) QueryByComponents(types ...component.ComponentType) []*Entity {
 
-	var candidates []*entity
+	var candidates []*Entity
 
 	for _, e := range m.entities {
 		matchCount := 0
@@ -31,8 +31,8 @@ func (m *Manager) QueryByComponents(types ...component.ComponentType) []*entity 
 	return candidates
 }
 
-func (m *Manager) QueryByTag(tag string) []*entity {
-	var candidates []*entity
+func (m *Manager) QueryByTag(tag string) []*Entity {
+	var candidates []*Entity
 	for _, e := range m.entities {
 		if e.Tag == tag {
 			candidates = append(candidates, e)
@@ -40,6 +40,17 @@ func (m *Manager) QueryByTag(tag string) []*entity {
 	}
 
 	return candidates
+}
+
+func (m *Manager) QueryFirstByTag(tag string) *Entity {
+	for _, e := range m.entities {
+		if e.Tag == tag {
+			return e
+		}
+	}
+
+	panic("expected to find at least one entity with tag:" + tag)
+	return nil
 }
 
 func (m *Manager) RemoveInactive() {

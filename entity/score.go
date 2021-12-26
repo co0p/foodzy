@@ -5,7 +5,7 @@ import (
 	"image/color"
 )
 
-func NewScore(text string, nutrient component.Nutrient, posX float64, posY float64) *entity {
+func NewScore(text string, nutrient component.Nutrient, posX float64, posY float64) *Entity {
 	e := NewEntity("score", true)
 
 	e.AddComponent(&component.Transform{X: posX, Y: posY, Scale: 1})
@@ -15,13 +15,13 @@ func NewScore(text string, nutrient component.Nutrient, posX float64, posY float
 	return e
 }
 
-func ConstructScores(ScreenWidth int, ScreenHeight int) []*entity {
+func ConstructScores(ScreenWidth int, ScreenHeight int) []*Entity {
 	scoreCount := 8
 	padding := 20
 	xOffset := float64((ScreenWidth/scoreCount - padding) - padding)
 	yPosition := float64(ScreenHeight - padding)
 
-	var scores []*entity
+	var scores []*Entity
 	scores = append(scores, NewScore("Corn", component.Nutrient{Corn: 1.0}, xOffset, yPosition))
 	scores = append(scores, NewScore("Dairy", component.Nutrient{Dairy: 1.0}, xOffset*2, yPosition))
 	scores = append(scores, NewScore("Drink", component.Nutrient{Drink: 1.0}, xOffset*3, yPosition))

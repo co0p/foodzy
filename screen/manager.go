@@ -3,15 +3,22 @@ package screen
 import "log"
 
 type Manager struct {
-	Current Screen
-	screens map[string]Screen
+	activateChannel chan Name
+	Current         Screen
+	screens         map[Name]Screen
 }
 
 func NewManager() *Manager {
-	return &Manager{
-		Current: nil,
-		screens: make(map[string]Screen),
+
+	manager := &Manager{
+		activateChannel: make(chan Name),
+		Current:         nil,
+		screens:         make(map[Name]Screen),
 	}
+
+	go manager.ListenOnActive()
+
+	return manager
 }
 
 func (m *Manager) AddScreen(s Screen) {
@@ -20,13 +27,22 @@ func (m *Manager) AddScreen(s Screen) {
 
 }
 
-func (m *Manager) ActiveScreen(name string) error {
+func (m *Manager) ActiveScreen(name Name) {
+	m.activateChannel <- name
+}
+
+func (m *Manager) ListenOnActive() {
+
+	name := <-m.activateChannel
 	l, ok := m.screens[name]
 
 	if !ok {
 		panic("could not find screen: " + name)
 	}
 
+	if m.Current != nil {
+		m.Current.Exit()
+	}
 	m.Current = l
-	return l.Init()
+	l.Init()
 }

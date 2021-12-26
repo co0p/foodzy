@@ -2,7 +2,7 @@ package entity
 
 import "github.com/co0p/foodzy/component"
 
-func NewFoodSpawner(spawnRate int) *entity {
+func NewFoodSpawner(spawnRate int) *Entity {
 
 	entity := NewEntity("spawner", true)
 	velocity := component.Velocity{X: 0, Y: 2.5}

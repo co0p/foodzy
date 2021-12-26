@@ -6,7 +6,7 @@ a video game written in golang using the ebiten 2d game libary
 ![Game overview](/docs/foodzy.png)
 
 Goal
-----
+======
 
 Keep your nutrition levels balanced as long as possible by eating the correct food. The longer
 you stay alive the better. Make sure those calories are in check as well.
@@ -17,12 +17,19 @@ Increase of difficulty
 based on your nutrition levels the plate changes form, or your movements become slower.
 
 current status
----------------
-![current status](/docs/foodzy.gif)
+================
+
+start screen
+------------
+![current status start screen](/docs/foodzy_start.gif)
+
+game screen
+-----------
+![current status game screen](/docs/foodzy.gif)
 
 
 resources
-----------
+==========
 
 - Food Assets taken from  https://axelpale.github.io/openmoji-sprites/ 
 - Gaming in Go by Velovix: https://www.youtube.com/playlist?list=PLOXvU5Ov-cqpjd1_OnczdizY0I64OfH-T

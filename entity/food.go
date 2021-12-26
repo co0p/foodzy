@@ -5,7 +5,7 @@ import (
 	"math/rand"
 )
 
-func NewFood(nutrient *component.Nutrient, sprite *component.Sprite, velocity *component.Velocity, transform *component.Transform) *entity {
+func NewFood(nutrient *component.Nutrient, sprite *component.Sprite, velocity *component.Velocity, transform *component.Transform) *Entity {
 
 	entity := NewEntity("", true)
 	entity.AddComponent(nutrient)

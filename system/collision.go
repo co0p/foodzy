@@ -1,7 +1,6 @@
 package system
 
 import (
-	"fmt"
 	"github.com/co0p/foodzy/component"
 	"github.com/co0p/foodzy/entity"
 	"github.com/hajimehoshi/ebiten/v2"
@@ -19,11 +18,7 @@ func (c *CollisionSystem) Draw(image *ebiten.Image) {}
 
 func (c *CollisionSystem) Update() error {
 
-	e := c.manager.QueryByTag("player")
-	if len(e) != 1 {
-		panic(fmt.Sprintf("expected one entity with tag 'player', got %v", len(e)))
-	}
-	player := e[0]
+	player := c.manager.QueryFirstByTag("player")
 	playerTransform := player.GetComponent(component.TransformType).(*component.Transform)
 	playerDim := player.GetComponent(component.CollisionType).(*component.Collision)
 	playerBox := boundingBox{

@@ -34,3 +34,10 @@ this file is used to generate asset files to be loaded by the game
 
 // sounds
 //go:generate file2byteslice -package=assets -input=assets/soundtrack.mp3 -output=assets/soundtrack.go -var=Soundtrack
+
+// menu
+//go:generate file2byteslice -package=assets -input=assets/title.png -output=assets/title.go -var=Title
+//go:generate file2byteslice -package=assets -input=assets/menu_start.png -output=assets/menuStart.go -var=MenuStart
+//go:generate file2byteslice -package=assets -input=assets/menu_start_active.png -output=assets/menuStartActive.go -var=MenuStartActive
+//go:generate file2byteslice -package=assets -input=assets/menu_quit.png -output=assets/menuQuit.go -var=MenuQuit
+//go:generate file2byteslice -package=assets -input=assets/menu_quit_active.png -output=assets/menuQuitActive.go -var=MenuQuitActive

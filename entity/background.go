@@ -5,7 +5,7 @@ import (
 	"github.com/co0p/foodzy/component"
 )
 
-func NewBackground() *entity {
+func NewBackground() *Entity {
 	bg := NewEntity("background", true)
 	sprite := component.NewSprite("background", assets.Background)
 
