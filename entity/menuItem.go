@@ -6,7 +6,7 @@ import (
 	"github.com/co0p/foodzy/utils"
 )
 
-func NewMenuStartItem(ScreenWidth int, ScreenHeight int) *Entity {
+func NewMenuStartItem(ScreenWidth int, ScreenHeight int, action func()) *Entity {
 
 	menuStartAsset, _ := utils.LoadImage(assets.MenuStart)
 	menuStartActiveAsset, _ := utils.LoadImage(assets.MenuStartActive)
@@ -18,6 +18,7 @@ func NewMenuStartItem(ScreenWidth int, ScreenHeight int) *Entity {
 	menuItem := component.MenuItem{
 		DefaultSprite: menuStartAsset,
 		ActiveSprite:  menuStartActiveAsset,
+		Action:        action,
 	}
 
 	xPos := float64((ScreenWidth - width) / 2)
@@ -33,7 +34,7 @@ func NewMenuStartItem(ScreenWidth int, ScreenHeight int) *Entity {
 	return entity
 }
 
-func NewMenuQuitItem(ScreenWidth int, ScreenHeight int) *Entity {
+func NewMenuQuitItem(ScreenWidth int, ScreenHeight int, action func()) *Entity {
 
 	menuQuitAsset, _ := utils.LoadImage(assets.MenuQuit)
 	menuQuitActiveAsset, _ := utils.LoadImage(assets.MenuQuitActive)
@@ -45,6 +46,7 @@ func NewMenuQuitItem(ScreenWidth int, ScreenHeight int) *Entity {
 	menuItem := component.MenuItem{
 		DefaultSprite: menuQuitAsset,
 		ActiveSprite:  menuQuitActiveAsset,
+		Action:        action,
 	}
 
 	xPos := float64((ScreenWidth - width) / 2)

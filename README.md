@@ -17,15 +17,8 @@ Increase of difficulty
 based on your nutrition levels the plate changes form, or your movements become slower.
 
 current status
-================
-
-start screen
 ------------
-![current status start screen](/docs/foodzy_start.gif)
-
-game screen
------------
-![current status game screen](/docs/foodzy.gif)
+![current status](/docs/foodzy.gif)
 
 
 resources

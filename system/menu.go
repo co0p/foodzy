@@ -7,24 +7,22 @@ import (
 )
 
 type MenuSystem struct {
-	manager      *entity.Manager
-	screenWidth  int
-	screenHeight int
+	entityManager *entity.Manager
+	items         []*entity.Entity
 }
 
-func NewMenuSystem(manager *entity.Manager, width, height int) *MenuSystem {
+func NewMenuSystem(manager *entity.Manager, items []*entity.Entity) *MenuSystem {
 	return &MenuSystem{
-		manager:      manager,
-		screenWidth:  width,
-		screenHeight: height,
+		entityManager: manager,
+		items:         items,
 	}
 }
 
 func (s *MenuSystem) Update() error {
 
 	// title animation
-	maxTitleHeight := float64(s.screenHeight / 4)
-	title := s.manager.QueryFirstByTag("title")
+	maxTitleHeight := 100.0
+	title := s.entityManager.QueryFirstByTag("title")
 
 	titleVelocity := title.GetComponent(component.VelocityType).(*component.Velocity)
 	titleTransform := title.GetComponent(component.TransformType).(*component.Transform)
@@ -33,23 +31,30 @@ func (s *MenuSystem) Update() error {
 	if titleVelocity.Y != 0 && titleTransform.Y > maxTitleHeight {
 		titleVelocity.Y = 0.0
 
-		s.manager.AddEntity(entity.NewMenuStartItem(s.screenWidth, s.screenHeight))
-		s.manager.AddEntity(entity.NewMenuQuitItem(s.screenWidth, s.screenHeight))
+		s.entityManager.AddEntity(s.items[0])
+		s.entityManager.AddEntity(s.items[1])
 	}
 
 	// highlight menu item
 	mx, my := ebiten.CursorPosition()
-	menuItems := s.manager.QueryByComponents(component.MouseColliderType, component.TransformType, component.SpriteType, component.MenuItemType)
+	menuItems := s.entityManager.QueryByComponents(component.MouseColliderType, component.TransformType, component.SpriteType, component.MenuItemType)
 	for _, v := range menuItems {
 		pos := v.GetComponent(component.TransformType).(*component.Transform)
 		boundingBox := v.GetComponent(component.MouseColliderType).(*component.MouseCollider)
-		sprite := v.GetComponent(component.SpriteType).(*component.Sprite)
-		mc := v.GetComponent(component.MenuItemType).(*component.MenuItem)
+		itemsSprite := v.GetComponent(component.SpriteType).(*component.Sprite)
+		menuItem := v.GetComponent(component.MenuItemType).(*component.MenuItem)
 
 		if mouseIsInBoundingbox(pos.X, pos.Y, boundingBox.Width, boundingBox.Height, float64(mx), float64(my)) {
-			sprite.Image = mc.ActiveSprite
+			itemsSprite.Image = menuItem.ActiveSprite
 		} else {
-			sprite.Image = mc.DefaultSprite
+			itemsSprite.Image = menuItem.DefaultSprite
+		}
+
+		// handle click
+		if ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
+			if mouseIsInBoundingbox(pos.X, pos.Y, boundingBox.Width, boundingBox.Height, float64(mx), float64(my)) {
+				menuItem.Action()
+			}
 		}
 	}
 

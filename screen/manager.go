@@ -1,39 +1,45 @@
 package screen
 
-import "log"
+import (
+	"log"
+)
+
+type Action string
+
+const (
+	ActionQuit                Action = "quit"
+	ActionActivateStartScreen Action = "startscreen"
+	ActionActivateGameScreen  Action = "gamescreen"
+)
 
 type Manager struct {
-	activateChannel chan Name
-	Current         Screen
-	screens         map[Name]Screen
+	Current Screen
+	screens map[string]Screen
 }
 
 func NewManager() *Manager {
 
 	manager := &Manager{
-		activateChannel: make(chan Name),
-		Current:         nil,
-		screens:         make(map[Name]Screen),
+		Current: nil,
+		screens: make(map[string]Screen),
 	}
-
-	go manager.ListenOnActive()
 
 	return manager
 }
 
 func (m *Manager) AddScreen(s Screen) {
-	log.Printf("[screen.Manager] activating screen:%s\n", s.Name())
+	log.Printf("[screen.Manager] adding screen:%s\n", s.Name())
 	m.screens[s.Name()] = s
 
 }
 
-func (m *Manager) ActiveScreen(name Name) {
-	m.activateChannel <- name
+func (m *Manager) quit() {
+	log.Printf("[screen.Manager] quit\n")
 }
 
-func (m *Manager) ListenOnActive() {
+func (m *Manager) ActivateScreen(name string) {
+	log.Printf("[screen.Manager] activate screen :%s\n", name)
 
-	name := <-m.activateChannel
 	l, ok := m.screens[name]
 
 	if !ok {

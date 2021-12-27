@@ -7,13 +7,15 @@ import (
 	"log"
 )
 
-const GameScreenName Name = "game"
+const GameScreenName string = "game"
 
 type GameScreen struct {
 	ScreenWidth   int
 	ScreenHeight  int
 	entityManager *entity.Manager
 	systems       []system.System
+	actions       map[Action]func()
+	initialized   bool
 }
 
 func NewGameScreen(ScreenWidth int, ScreenHeight int) *GameScreen {
@@ -22,14 +24,21 @@ func NewGameScreen(ScreenWidth int, ScreenHeight int) *GameScreen {
 		ScreenHeight:  ScreenHeight,
 		entityManager: &entity.Manager{},
 		systems:       []system.System{},
+		actions:       make(map[Action]func()),
+		initialized:   false,
 	}
 }
 
-func (g *GameScreen) Name() Name {
+func (g *GameScreen) Name() string {
 	return GameScreenName
 }
 
 func (g *GameScreen) Init() {
+	if g.initialized {
+		log.Printf("[screen:%s] resuming\n", g.Name())
+		return
+	}
+
 	log.Printf("[screen:%s] initializing\n", g.Name())
 
 	g.entityManager.AddEntity(entity.NewBackground())
@@ -44,7 +53,6 @@ func (g *GameScreen) Init() {
 	g.systems = append(g.systems,
 		system.NewMovementSystem(g.entityManager),
 		system.NewControllerSystem(g.entityManager, g.ScreenWidth, g.ScreenHeight),
-		system.NewSoundSystem(),
 		system.NewFoodSpawningSystem(g.entityManager, g.ScreenWidth),
 		system.NewCollisionSystem(g.entityManager),
 		system.NewScoreSystem(g.entityManager),
@@ -52,13 +60,19 @@ func (g *GameScreen) Init() {
 		system.NewTextRenderSystem(g.entityManager),
 		system.NewCleanupSystem(g.entityManager, 100, g.ScreenHeight),
 	)
+
+	g.initialized = true
 }
 
 func (g *GameScreen) Exit() {
 	log.Printf("[screen:%s] exit\n", g.Name())
 }
 
-func (g GameScreen) Update() error {
+func (g *GameScreen) Update() error {
+
+	if ebiten.IsKeyPressed(ebiten.KeyEscape) {
+		g.actions[ActionActivateStartScreen]()
+	}
 
 	for _, s := range g.systems {
 		if err := s.Update(); err != nil {
@@ -69,8 +83,12 @@ func (g GameScreen) Update() error {
 	return nil
 }
 
-func (g GameScreen) Draw(screen *ebiten.Image) {
+func (g *GameScreen) Draw(screen *ebiten.Image) {
 	for _, s := range g.systems {
 		s.Draw(screen)
 	}
+}
+
+func (g *GameScreen) AddAction(action Action, callback func()) {
+	g.actions[action] = callback
 }

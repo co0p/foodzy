@@ -1,10 +1,13 @@
 package component
 
-import "github.com/hajimehoshi/ebiten/v2"
+import (
+	"github.com/hajimehoshi/ebiten/v2"
+)
 
 type MenuItem struct {
 	DefaultSprite *ebiten.Image
 	ActiveSprite  *ebiten.Image
+	Action        func()
 }
 
 const MenuItemType ComponentType = "MenuItem"
