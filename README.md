@@ -24,6 +24,7 @@ current status
 resources
 ==========
 
+- Eating sound is from Caroline Ford (https://soundbible.com/search.php?q=bite) Eating-SoundBible.com-1470347575
 - Food Assets taken from  https://axelpale.github.io/openmoji-sprites/ 
 - Gaming in Go by Velovix: https://www.youtube.com/playlist?list=PLOXvU5Ov-cqpjd1_OnczdizY0I64OfH-T
 - WORKSHOP: Game development with Go - Tommaso Visconti: https://www.youtube.com/watch?v=6r6ZH4cA41M&t

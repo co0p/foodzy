@@ -1,17 +1,18 @@
 package component
 
+import (
+	"github.com/co0p/foodzy/internal/ecs"
+)
+
 type FoodSpawner struct {
 	CoolDown int
 	Rate     int
 	Variance float64
-	Velocity struct {
-		X float64
-		Y float64
-	}
+	Velocity Velocity
 }
 
-const FoodSpawnerType ComponentType = "FoodSpawner"
+const FoodSpawnerType ecs.ComponentType = "FoodSpawner"
 
-func (f *FoodSpawner) Type() ComponentType {
+func (f *FoodSpawner) Type() ecs.ComponentType {
 	return FoodSpawnerType
 }

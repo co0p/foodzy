@@ -1,5 +1,9 @@
 package component
 
+import (
+	"github.com/co0p/foodzy/internal/ecs"
+)
+
 type Transform struct {
 	X        float64
 	Y        float64
@@ -8,8 +12,8 @@ type Transform struct {
 	Rotation float64
 }
 
-const TransformType ComponentType = "Transform"
+const TransformType ecs.ComponentType = "Transform"
 
-func (p Transform) Type() ComponentType {
+func (p Transform) Type() ecs.ComponentType {
 	return TransformType
 }

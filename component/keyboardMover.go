@@ -1,11 +1,15 @@
 package component
 
+import (
+	"github.com/co0p/foodzy/internal/ecs"
+)
+
 type KeyboardMover struct {
 	Speed float64
 }
 
-const KeyboardMoverType ComponentType = "KeyboardMover"
+const KeyboardMoverType ecs.ComponentType = "KeyboardMover"
 
-func (k *KeyboardMover) Type() ComponentType {
+func (k *KeyboardMover) Type() ecs.ComponentType {
 	return KeyboardMoverType
 }

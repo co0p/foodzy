@@ -1,5 +1,9 @@
 package component
 
+import (
+	"github.com/co0p/foodzy/internal/ecs"
+)
+
 type Nutrient struct {
 	Corn      float64
 	Dairy     float64
@@ -12,9 +16,9 @@ type Nutrient struct {
 	KCal      float64
 }
 
-const NutrientType ComponentType = "Nutrient"
+const NutrientType ecs.ComponentType = "Nutrient"
 
-func (n *Nutrient) Type() ComponentType {
+func (n *Nutrient) Type() ecs.ComponentType {
 	return NutrientType
 }
 

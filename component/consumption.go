@@ -1,5 +1,9 @@
 package component
 
+import (
+	"github.com/co0p/foodzy/internal/ecs"
+)
+
 var ConsumptionDefaultRate = -0.001
 
 type Consumption struct {
@@ -14,8 +18,8 @@ type Consumption struct {
 	KCal      float64
 }
 
-const ConsumptionType ComponentType = "Consumption"
+const ConsumptionType ecs.ComponentType = "Consumption"
 
-func (c *Consumption) Type() ComponentType {
+func (c *Consumption) Type() ecs.ComponentType {
 	return ConsumptionType
 }

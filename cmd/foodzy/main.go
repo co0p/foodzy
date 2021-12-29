@@ -8,11 +8,10 @@ import (
 
 func main() {
 
-	game := foodzy.NewGame()
-
 	ebiten.SetWindowSize(foodzy.ScreenWidth, foodzy.ScreenHeight)
 	ebiten.SetWindowTitle(foodzy.GameName)
 
+	game := foodzy.NewGame()
 	if err := ebiten.RunGame(game); err != nil {
 		log.Fatal(err)
 	}

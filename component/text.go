@@ -1,6 +1,7 @@
 package component
 
 import (
+	"github.com/co0p/foodzy/internal/ecs"
 	"image/color"
 )
 
@@ -9,8 +10,8 @@ type Text struct {
 	Color color.Color
 }
 
-const TextType ComponentType = "Text"
+const TextType ecs.ComponentType = "Text"
 
-func (t Text) Type() ComponentType {
+func (t Text) Type() ecs.ComponentType {
 	return TextType
 }

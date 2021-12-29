@@ -1,6 +1,7 @@
 package component
 
 import (
+	"github.com/co0p/foodzy/internal/ecs"
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
@@ -10,8 +11,8 @@ type MenuItem struct {
 	Action        func()
 }
 
-const MenuItemType ComponentType = "MenuItem"
+const MenuItemType ecs.ComponentType = "MenuItem"
 
-func (c *MenuItem) Type() ComponentType {
+func (c *MenuItem) Type() ecs.ComponentType {
 	return MenuItemType
 }

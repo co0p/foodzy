@@ -1,22 +1,23 @@
 package component
 
 import (
-	"github.com/co0p/foodzy/utils"
+	"github.com/co0p/foodzy/asset"
+	"github.com/co0p/foodzy/internal/ecs"
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
-const SpriteType ComponentType = "Sprite"
+const SpriteType ecs.ComponentType = "Sprite"
 
 type Sprite struct {
 	Image *ebiten.Image
 	name  string
 }
 
-func (s *Sprite) Type() ComponentType {
+func (s *Sprite) Type() ecs.ComponentType {
 	return SpriteType
 }
 
 func NewSprite(tag string, img []byte) *Sprite {
-	sprite, _ := utils.LoadImage(img)
+	sprite, _ := asset.LoadImage(img)
 	return &Sprite{name: tag, Image: sprite}
 }
