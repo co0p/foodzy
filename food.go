@@ -6,10 +6,10 @@ import (
 	"math/rand"
 )
 
-func NewFood(nutrient *component.Nutrient, sprite *component.Sprite, velocity *component.Velocity, transform *component.Transform) *ecs.Entity {
+func NewFood(food *component.Food, sprite *component.Sprite, velocity *component.Velocity, transform *component.Transform) *ecs.Entity {
 
 	entity := ecs.NewEntity("", true)
-	entity.AddComponent(nutrient)
+	entity.AddComponent(food)
 	entity.AddComponent(sprite)
 	w, h := sprite.Image.Size()
 

@@ -24,6 +24,7 @@ current status
 resources
 ==========
 
+- font designed by Khurasan and is called Stop-Bullying from https://www.fontspace.com/stop-bullying-font-f71851
 - Eating sound is from Caroline Ford (https://soundbible.com/search.php?q=bite) Eating-SoundBible.com-1470347575
 - Food Assets taken from  https://axelpale.github.io/openmoji-sprites/ 
 - Gaming in Go by Velovix: https://www.youtube.com/playlist?list=PLOXvU5Ov-cqpjd1_OnczdizY0I64OfH-T

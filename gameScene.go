@@ -11,7 +11,7 @@ import (
 const GameScreenName string = "game"
 
 type GameScreen struct {
-	entityManager *ecs.Manager
+	entityManager *ecs.EntityManager
 	soundManager  *sound.SoundManager
 	systems       []ecs.System
 	actions       map[scene.Action]func()
@@ -20,7 +20,7 @@ type GameScreen struct {
 
 func NewGameScreen(soundManager *sound.SoundManager) *GameScreen {
 	return &GameScreen{
-		entityManager: &ecs.Manager{},
+		entityManager: &ecs.EntityManager{},
 		soundManager:  soundManager,
 		systems:       []ecs.System{},
 		actions:       make(map[scene.Action]func()),
@@ -41,15 +41,12 @@ func (g *GameScreen) Init() {
 	log.Printf("[screen:%s] initializing\n", g.Name())
 
 	g.entityManager.AddEntity(NewBackground())
-	g.entityManager.AddEntity(NewPlayer(ScreenWidth, ScreenHeight))
+	g.entityManager.AddEntity(NewPlayer())
 	g.entityManager.AddEntity(NewFoodSpawner(40))
-
-	scores := ConstructScores(ScreenWidth, ScreenHeight)
-	for _, v := range scores {
-		g.entityManager.AddEntity(v)
-	}
+	g.entityManager.AddEntity(NewHealth())
 
 	g.systems = append(g.systems,
+		NewHealthSystem(g.entityManager, g.actions[ActionActivateGameOverScreen]),
 		NewMovementSystem(g.entityManager),
 		NewControllerSystem(g.entityManager),
 		NewFoodSpawningSystem(g.entityManager),
@@ -70,7 +67,7 @@ func (g *GameScreen) Exit() {
 func (g *GameScreen) Update() error {
 
 	if ebiten.IsKeyPressed(ebiten.KeyEscape) {
-		g.actions[scene.ActionActivateStartScreen]()
+		g.actions[ActionActivateStartScreen]()
 	}
 
 	for _, s := range g.systems {

@@ -7,10 +7,10 @@ import (
 )
 
 type ControllerSystem struct {
-	manager *ecs.Manager
+	manager *ecs.EntityManager
 }
 
-func NewControllerSystem(manager *ecs.Manager) *ControllerSystem {
+func NewControllerSystem(manager *ecs.EntityManager) *ControllerSystem {
 	return &ControllerSystem{manager: manager}
 }
 

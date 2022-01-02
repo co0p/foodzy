@@ -7,11 +7,11 @@ import (
 )
 
 type MenuSystem struct {
-	entityManager *ecs.Manager
+	entityManager *ecs.EntityManager
 	items         []*ecs.Entity
 }
 
-func NewMenuSystem(manager *ecs.Manager, items []*ecs.Entity) *MenuSystem {
+func NewMenuSystem(manager *ecs.EntityManager, items []*ecs.Entity) *MenuSystem {
 	return &MenuSystem{
 		entityManager: manager,
 		items:         items,

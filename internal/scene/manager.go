@@ -6,12 +6,6 @@ import (
 
 type Action string
 
-const (
-	ActionQuit                Action = "quit"
-	ActionActivateStartScreen Action = "startscene"
-	ActionActivateGameScreen  Action = "gamescene"
-)
-
 type SceneManager struct {
 	Current Scene
 	scenes  map[string]Scene
@@ -37,7 +31,7 @@ func (m *SceneManager) quit() {
 	log.Printf("[SceneManager] quit\n")
 }
 
-func (m *SceneManager) ActivateScreen(name string) {
+func (m *SceneManager) ActivateScreen(name string, pause bool) {
 	log.Printf("[SceneManager] activate scene:%s\n", name)
 
 	l, ok := m.scenes[name]
@@ -46,7 +40,7 @@ func (m *SceneManager) ActivateScreen(name string) {
 		panic("could not find scene: " + name)
 	}
 
-	if m.Current != nil {
+	if m.Current != nil && !pause {
 		m.Current.Exit()
 	}
 	m.Current = l

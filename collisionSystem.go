@@ -7,10 +7,10 @@ import (
 )
 
 type CollisionSystem struct {
-	manager *ecs.Manager
+	manager *ecs.EntityManager
 }
 
-func NewCollisionSystem(manager *ecs.Manager) *CollisionSystem {
+func NewCollisionSystem(manager *ecs.EntityManager) *CollisionSystem {
 	return &CollisionSystem{manager: manager}
 }
 
@@ -19,6 +19,7 @@ func (c *CollisionSystem) Draw(image *ebiten.Image) {}
 func (c *CollisionSystem) Update() error {
 
 	player := c.manager.QueryFirstByTag("player")
+	playerHealth := player.GetComponent(component.HealthType).(*component.Health)
 	playerTransform := player.GetComponent(component.TransformType).(*component.Transform)
 	playerDim := player.GetComponent(component.CollisionType).(*component.Collision)
 	playerBox := boundingBox{
@@ -28,7 +29,7 @@ func (c *CollisionSystem) Update() error {
 		height: playerDim.Height * playerTransform.Scale,
 	}
 
-	otherEntities := c.manager.QueryByComponents(component.NutrientType, component.CollisionType, component.TransformType)
+	otherEntities := c.manager.QueryByComponents(component.FoodType, component.CollisionType, component.TransformType)
 	for _, entity := range otherEntities {
 		if player == entity || !entity.Active {
 			continue
@@ -45,13 +46,15 @@ func (c *CollisionSystem) Update() error {
 
 		if playerBox.AABBCollision(entityBox) {
 
+			// play sound
 			player.AddComponent(&component.Sound{Clip: SoundEat})
 
+			// player eats food
+			food := entity.GetComponent(component.FoodType).(*component.Food)
+			playerHealth.EatFood(food)
+
+			// remove food entity
 			entity.Active = false
-			// TODO add collision logic here
-			//playerNutrients := player.GetComponent(component.NutrientType).(*component.Nutrient)
-			//entityNutrients := entity.GetComponent(component.NutrientType).(*component.Nutrient)
-			//playerNutrients.Add(entityNutrients)
 		}
 	}
 

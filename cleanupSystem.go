@@ -7,12 +7,12 @@ import (
 )
 
 type CleanupSystem struct {
-	manager      *ecs.Manager
+	manager      *ecs.EntityManager
 	runFrequency int
 	coolDown     int
 }
 
-func NewCleanupSystem(manager *ecs.Manager, frequency int) *CleanupSystem {
+func NewCleanupSystem(manager *ecs.EntityManager, frequency int) *CleanupSystem {
 
 	return &CleanupSystem{
 		manager:      manager,

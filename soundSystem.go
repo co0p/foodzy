@@ -8,11 +8,11 @@ import (
 )
 
 type SoundSystem struct {
-	entityManager *ecs.Manager
+	entityManager *ecs.EntityManager
 	soundManager  *sound.SoundManager
 }
 
-func NewSoundSystem(entityManager *ecs.Manager, soundManager *sound.SoundManager) *SoundSystem {
+func NewSoundSystem(entityManager *ecs.EntityManager, soundManager *sound.SoundManager) *SoundSystem {
 	return &SoundSystem{entityManager: entityManager, soundManager: soundManager}
 }
 
@@ -21,9 +21,9 @@ func (s *SoundSystem) Update() error {
 
 	for _, e := range entities {
 		soundEffect := e.GetComponent(component.SoundType).(*component.Sound)
+		e.RemoveComponent(soundEffect)
 
 		s.soundManager.Play(soundEffect.Clip)
-		e.RemoveComponent(soundEffect)
 	}
 
 	return nil

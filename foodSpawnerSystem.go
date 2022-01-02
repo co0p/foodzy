@@ -9,45 +9,44 @@ import (
 	"math/rand"
 )
 
-type FoodDefintion struct {
-	name     string
-	asset    []byte
-	nutrient component.Nutrient
-}
+const initialYPosition float64 = -200
 
-var foodList = []FoodDefintion{
-	{name: "Corn_baguette", asset: asset.Corn_baguette, nutrient: component.Nutrient{Corn: 2, KCal: 100}},
-	{name: "Corn_bread", asset: asset.Corn_bread, nutrient: component.Nutrient{Corn: 3, KCal: 100}},
-	{name: "Corn_rice", asset: asset.Corn_rice, nutrient: component.Nutrient{Corn: 2, KCal: 100}},
-	{name: "Dairy_cheese", asset: asset.Dairy_cheese, nutrient: component.Nutrient{Dairy: 2, KCal: 100}},
-	{name: "Dairy_milk", asset: asset.Dairy_milk, nutrient: component.Nutrient{Dairy: 2, KCal: 100}},
-	{name: "Drink_beer", asset: asset.Drink_beer, nutrient: component.Nutrient{Drink: 3, KCal: 100}},
-	{name: "Drink_coffee", asset: asset.Drink_coffee, nutrient: component.Nutrient{Drink: 1, KCal: 100}},
-	{name: "Drink_juice", asset: asset.Drink_juice, nutrient: component.Nutrient{Drink: 1, KCal: 100}},
-	{name: "Drink_tea", asset: asset.Drink_tea, nutrient: component.Nutrient{Drink: 1, KCal: 100}},
-	{name: "Drink_water", asset: asset.Drink_water, nutrient: component.Nutrient{Drink: 1, KCal: 100}},
-	{name: "Fish_crab", asset: asset.Fish_crab, nutrient: component.Nutrient{Fish: 3, KCal: 100}},
-	{name: "Fish_sushi", asset: asset.Fish_sushi, nutrient: component.Nutrient{Fish: 2, KCal: 100}},
-	{name: "Fruit_apple", asset: asset.Fruit_apple, nutrient: component.Nutrient{Fruit: 2, KCal: 100}},
-	{name: "Fruit_banana", asset: asset.Fruit_banana, nutrient: component.Nutrient{Fruit: 2, KCal: 100}},
-	{name: "Fruit_grapes", asset: asset.Fruit_grapes, nutrient: component.Nutrient{Fruit: 1, KCal: 100}},
-	{name: "Fruit_orange", asset: asset.Fruit_orange, nutrient: component.Nutrient{Fruit: 2, KCal: 100}},
-	{name: "Fruit_strawberry", asset: asset.Fruit_strawberry, nutrient: component.Nutrient{Fruit: 1, KCal: 100}},
-	{name: "Meat_steak", asset: asset.Meat_steak, nutrient: component.Nutrient{Meat: 3, KCal: 100}},
-	{name: "Treat_cupcake", asset: asset.Treat_cupcake, nutrient: component.Nutrient{Treat: 1, KCal: 100}},
-	{name: "Treat_donut", asset: asset.Treat_donut, nutrient: component.Nutrient{Treat: 1, KCal: 100}},
-	{name: "Vegetable_carrot", asset: asset.Vegetable_carrot, nutrient: component.Nutrient{Vegetable: 1, KCal: 100}},
-	{name: "Vegetable_eggplant", asset: asset.Vegetable_eggplant, nutrient: component.Nutrient{Vegetable: 1, KCal: 100}},
-	{name: "Vegetable_potato", asset: asset.Vegetable_potato, nutrient: component.Nutrient{Vegetable: 2, KCal: 100}},
-	{name: "Vegetable_tomato", asset: asset.Vegetable_tomato, nutrient: component.Nutrient{Vegetable: 1, KCal: 100}},
+var foods = []struct {
+	food  component.Food
+	asset []byte
+}{
+	{component.Food{Value: -4}, asset.Corn_baguette},
+	{component.Food{Value: -3}, asset.Corn_bread},
+	{component.Food{Value: 1}, asset.Corn_rice},
+	{component.Food{Value: 2}, asset.Dairy_cheese},
+	{component.Food{Value: 3}, asset.Dairy_milk},
+	{component.Food{Value: -10}, asset.Drink_beer},
+	{component.Food{Value: 1}, asset.Drink_coffee},
+	{component.Food{Value: 3}, asset.Drink_juice},
+	{component.Food{Value: 5}, asset.Drink_tea},
+	{component.Food{Value: 25}, asset.Drink_water},
+	{component.Food{Value: 2}, asset.Fish_crab},
+	{component.Food{Value: 4}, asset.Fish_sushi},
+	{component.Food{Value: 10}, asset.Fruit_apple},
+	{component.Food{Value: 10}, asset.Fruit_banana},
+	{component.Food{Value: 8}, asset.Fruit_grapes},
+	{component.Food{Value: 6}, asset.Fruit_orange},
+	{component.Food{Value: 2}, asset.Fruit_strawberry},
+	{component.Food{Value: -5}, asset.Meat_steak},
+	{component.Food{Value: -20}, asset.Treat_cupcake},
+	{component.Food{Value: -20}, asset.Treat_donut},
+	{component.Food{Value: 8}, asset.Vegetable_carrot},
+	{component.Food{Value: 6}, asset.Vegetable_eggplant},
+	{component.Food{Value: 2}, asset.Vegetable_potato},
+	{component.Food{Value: 6}, asset.Vegetable_tomato},
 }
 
 // FoodSpawningSystem is responsible for spawning random food
 type FoodSpawningSystem struct {
-	manager *ecs.Manager
+	manager *ecs.EntityManager
 }
 
-func NewFoodSpawningSystem(manager *ecs.Manager) *FoodSpawningSystem {
+func NewFoodSpawningSystem(manager *ecs.EntityManager) *FoodSpawningSystem {
 	return &FoodSpawningSystem{
 		manager: manager,
 	}
@@ -69,16 +68,17 @@ func (s *FoodSpawningSystem) Update() error {
 	}
 
 	padding := 10
-	idx := rand.Intn(len(foodList))
-	candidate := foodList[idx]
-	posX := rand.Intn(ScreenWidth-padding*3) + padding
-	posY := -200
+	idx := rand.Intn(len(foods))
+	candidate := foods[idx]
 
-	sprite := component.NewSprite(candidate.name, candidate.asset)
-	position := component.Transform{X: float64(posX), Y: float64(posY), Scale: 0.7}
+	posX := float64(rand.Intn(ScreenWidth-padding*4) + padding)
+	posY := initialYPosition
+
+	position := component.Transform{X: posX, Y: posY, Scale: 0.7}
 	velocity := component.Velocity{X: foodSpawner.Velocity.X, Y: foodSpawner.Velocity.Y}
+	sprite := component.NewSprite("", candidate.asset)
 
-	food := NewFood(&candidate.nutrient, sprite, &velocity, &position)
+	food := NewFood(&candidate.food, sprite, &velocity, &position)
 	s.manager.AddEntity(food)
 
 	foodSpawner.CoolDown = foodSpawner.Rate

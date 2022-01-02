@@ -3,35 +3,38 @@ package foodzy
 import (
 	"github.com/co0p/foodzy/internal/ecs"
 	"github.com/co0p/foodzy/internal/scene"
+	"github.com/co0p/foodzy/internal/sound"
 	"github.com/hajimehoshi/ebiten/v2"
 	"log"
 )
 
-const StartScreenName string = "start"
+const GameOverSceneName = "gameover"
 
-type StartScreen struct {
+type GameOverScene struct {
 	ScreenWidth   int
 	ScreenHeight  int
 	entityManager *ecs.EntityManager
+	soundManager  *sound.SoundManager
 	systems       []ecs.System
 	actions       map[scene.Action]func()
 	initialized   bool
 }
 
-func NewStartScreen() *StartScreen {
-	return &StartScreen{
+func NewGameOverScene(manager *sound.SoundManager) *GameOverScene {
+	return &GameOverScene{
 		initialized:   false,
 		actions:       make(map[scene.Action]func()),
 		entityManager: &ecs.EntityManager{},
+		soundManager:  manager,
 		systems:       []ecs.System{},
 	}
 }
 
-func (s *StartScreen) Name() string {
-	return StartScreenName
+func (s *GameOverScene) Name() string {
+	return GameOverSceneName
 }
 
-func (s *StartScreen) Init() {
+func (s *GameOverScene) Init() {
 
 	if s.initialized {
 		log.Printf("[screen:%s] resuming\n", s.Name())
@@ -42,29 +45,25 @@ func (s *StartScreen) Init() {
 
 	s.entityManager.AddEntity(NewBackground())
 	s.entityManager.AddEntity(NewFoodSpawner(40))
-	s.entityManager.AddEntity(NewTitle())
-
-	startMenuItem := NewMenuStartItem(s.actions[ActionActivateGameScreen])
-	quitMenuItem := NewMenuQuitItem(s.actions[ActionQuit])
-	items := []*ecs.Entity{startMenuItem, quitMenuItem}
+	s.entityManager.AddEntity(NewGameOverTitle())
 
 	s.systems = append(s.systems,
-		NewMenuSystem(s.entityManager, items),
 		NewMovementSystem(s.entityManager),
 		NewFoodSpawningSystem(s.entityManager),
 		NewSpriteRenderSystem(s.entityManager),
-		NewCleanupSystem(s.entityManager, 100),
+		NewTextRenderSystem(s.entityManager),
+		NewGameoverSystem(s.entityManager, s.soundManager, s.actions[ActionQuit]),
+		NewCleanupSystem(s.entityManager, 10),
 	)
 
 	s.initialized = true
 }
 
-func (s *StartScreen) Exit() {
+func (s *GameOverScene) Exit() {
 	log.Printf("[screen:%s] exit\n", s.Name())
 }
 
-func (s *StartScreen) Update() error {
-
+func (s *GameOverScene) Update() error {
 	for _, sys := range s.systems {
 		if err := sys.Update(); err != nil {
 			return err
@@ -74,12 +73,12 @@ func (s *StartScreen) Update() error {
 	return nil
 }
 
-func (s *StartScreen) Draw(screen *ebiten.Image) {
+func (s *GameOverScene) Draw(screen *ebiten.Image) {
 	for _, sys := range s.systems {
 		sys.Draw(screen)
 	}
 }
 
-func (s *StartScreen) AddAction(action scene.Action, callback func()) {
+func (s *GameOverScene) AddAction(action scene.Action, callback func()) {
 	s.actions[action] = callback
 }

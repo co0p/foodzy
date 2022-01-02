@@ -1,36 +1,33 @@
 package foodzy
 
 import (
+	"github.com/co0p/foodzy/asset"
 	"github.com/co0p/foodzy/component"
 	"github.com/co0p/foodzy/internal/ecs"
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/examples/resources/fonts"
 	"github.com/hajimehoshi/ebiten/v2/text"
 	"golang.org/x/image/font"
 	"golang.org/x/image/font/opentype"
 	"log"
 )
 
+var (
+	FontMedium font.Face
+	FontBig    font.Face
+	FontHuge   font.Face
+)
+
 type TextRenderSystem struct {
-	manager *ecs.Manager
-	font    font.Face
+	manager *ecs.EntityManager
 }
 
-func NewTextRenderSystem(manager *ecs.Manager) *TextRenderSystem {
-	tt, err := opentype.Parse(fonts.MPlus1pRegular_ttf)
-	if err != nil {
-		log.Fatal(err)
-	}
+func NewTextRenderSystem(manager *ecs.EntityManager) *TextRenderSystem {
 
-	f, err := opentype.NewFace(tt, &opentype.FaceOptions{
-		Size:    20,
-		DPI:     72,
-		Hinting: font.HintingFull,
-	})
-	if err != nil {
-		log.Fatal(err)
-	}
-	return &TextRenderSystem{manager: manager, font: f}
+	FontMedium = loadFont(asset.StopBullyingFont, 24)
+	FontBig = loadFont(asset.StopBullyingFont, 46)
+	FontHuge = loadFont(asset.StopBullyingFont, 80)
+
+	return &TextRenderSystem{manager: manager}
 }
 
 func (s *TextRenderSystem) Draw(screen *ebiten.Image) {
@@ -44,10 +41,29 @@ func (s *TextRenderSystem) Draw(screen *ebiten.Image) {
 
 		txt := e.GetComponent(component.TextType).(*component.Text)
 		pos := e.GetComponent(component.TransformType).(*component.Transform)
-		text.Draw(screen, txt.Value, s.font, int(pos.X), int(pos.Y), txt.Color)
+		text.Draw(screen, txt.Value, *txt.Font, int(pos.X), int(pos.Y), txt.Color)
 	}
 }
 
 func (s *TextRenderSystem) Update() error {
 	return nil
+}
+
+func loadFont(ttfFont []byte, size float64) font.Face {
+
+	tt, err := opentype.Parse(ttfFont)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	f, err := opentype.NewFace(tt, &opentype.FaceOptions{
+		Size:    size,
+		DPI:     72,
+		Hinting: font.HintingFull,
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return f
 }

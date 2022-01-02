@@ -1,16 +1,16 @@
 package ecs
 
-type Manager struct {
+type EntityManager struct {
 	entities []*Entity
 }
 
 // AddEntity adds the given Entity to the internal list of entities
-func (m *Manager) AddEntity(e *Entity) {
+func (m *EntityManager) AddEntity(e *Entity) {
 	m.entities = append(m.entities, e)
 }
 
 // QueryByComponents returns the set of Entity having all provided components
-func (m *Manager) QueryByComponents(types ...ComponentType) []*Entity {
+func (m *EntityManager) QueryByComponents(types ...ComponentType) []*Entity {
 
 	var candidates []*Entity
 
@@ -29,7 +29,7 @@ func (m *Manager) QueryByComponents(types ...ComponentType) []*Entity {
 	return candidates
 }
 
-func (m *Manager) QueryByTag(tag string) []*Entity {
+func (m *EntityManager) QueryByTag(tag string) []*Entity {
 	var candidates []*Entity
 	for _, e := range m.entities {
 		if e.Tag == tag {
@@ -40,7 +40,7 @@ func (m *Manager) QueryByTag(tag string) []*Entity {
 	return candidates
 }
 
-func (m *Manager) QueryFirstByTag(tag string) *Entity {
+func (m *EntityManager) QueryFirstByTag(tag string) *Entity {
 	for _, e := range m.entities {
 		if e.Tag == tag {
 			return e
@@ -51,7 +51,7 @@ func (m *Manager) QueryFirstByTag(tag string) *Entity {
 	return nil
 }
 
-func (m *Manager) RemoveInactive() {
+func (m *EntityManager) RemoveInactive() {
 	cleaned := m.entities[:0]
 
 	for _, entity := range m.entities {

@@ -7,10 +7,10 @@ import (
 )
 
 type MovementSystem struct {
-	manager *ecs.Manager
+	manager *ecs.EntityManager
 }
 
-func NewMovementSystem(manager *ecs.Manager) *MovementSystem {
+func NewMovementSystem(manager *ecs.EntityManager) *MovementSystem {
 	return &MovementSystem{
 		manager: manager,
 	}

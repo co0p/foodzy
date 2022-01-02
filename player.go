@@ -8,7 +8,7 @@ import (
 
 const playerSize = 50
 
-func NewPlayer(ScreenWidth int, ScreenHeight int) *ecs.Entity {
+func NewPlayer() *ecs.Entity {
 
 	keyboardMover := &component.KeyboardMover{Speed: 4.5}
 	transform := &component.Transform{
@@ -19,8 +19,9 @@ func NewPlayer(ScreenWidth int, ScreenHeight int) *ecs.Entity {
 	sprite := component.NewSprite("player", asset.Plate)
 	width, height := sprite.Image.Size()
 	collision := &component.Collision{Width: float64(width), Height: float64(height)}
+	health := &component.Health{Value: component.MaxHealth}
 
 	entity := ecs.NewEntity("player", true)
-	entity.AddComponents(collision, sprite, keyboardMover, transform)
+	entity.AddComponents(collision, sprite, keyboardMover, transform, health)
 	return entity
 }

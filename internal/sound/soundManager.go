@@ -74,3 +74,15 @@ func (a *SoundManager) Stop(key string) {
 	player.Pause()
 	player.Rewind()
 }
+
+func (a *SoundManager) Volume(key string, delta float64) float64 {
+	player, ok := a.players[key]
+	if !ok {
+		log.Printf("could not find clip:%s\n", key)
+		return 0
+	}
+	vol := player.Volume()
+	player.SetVolume(vol + delta)
+
+	return vol
+}
