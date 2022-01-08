@@ -3,83 +3,38 @@ package foodzy
 import (
 	"github.com/co0p/foodzy/internal/ecs"
 	"github.com/co0p/foodzy/internal/scene"
-	"github.com/hajimehoshi/ebiten/v2"
-	"log"
 )
 
-const StartScreenName string = "start"
+const StartSceneName string = "start"
 
-type StartScreen struct {
-	ScreenWidth   int
-	ScreenHeight  int
+type StartScene struct {
+	scene.GameScene
+
 	entityManager *ecs.EntityManager
-	systems       []ecs.System
-	actions       map[scene.Action]func()
-	initialized   bool
 }
 
-func NewStartScreen() *StartScreen {
-	return &StartScreen{
-		initialized:   false,
-		actions:       make(map[scene.Action]func()),
-		entityManager: &ecs.EntityManager{},
-		systems:       []ecs.System{},
-	}
+func (s *StartScene) Name() string {
+	return StartSceneName
 }
 
-func (s *StartScreen) Name() string {
-	return StartScreenName
-}
+func NewStartScene(startAction ActionType, quitAction ActionType) *StartScene {
 
-func (s *StartScreen) Init() {
+	entityManager := ecs.EntityManager{}
+	entityManager.AddEntity(NewBackground())
+	entityManager.AddEntity(NewFoodSpawner(40))
+	entityManager.AddEntity(NewTitle())
+	entityManager.AddEntity(NewMenuItem("start", startAction, 200))
+	entityManager.AddEntity(NewMenuItem("quit", quitAction, 250))
 
-	if s.initialized {
-		log.Printf("[screen:%s] resuming\n", s.Name())
-		return
-	}
-
-	log.Printf("[screen:%s] initializing\n", s.Name())
-
-	s.entityManager.AddEntity(NewBackground())
-	s.entityManager.AddEntity(NewFoodSpawner(40))
-	s.entityManager.AddEntity(NewTitle())
-
-	startMenuItem := NewMenuStartItem(s.actions[ActionActivateGameScreen])
-	quitMenuItem := NewMenuQuitItem(s.actions[ActionQuit])
-	items := []*ecs.Entity{startMenuItem, quitMenuItem}
-
-	s.systems = append(s.systems,
-		NewMenuSystem(s.entityManager, items),
-		NewMovementSystem(s.entityManager),
-		NewFoodSpawningSystem(s.entityManager),
-		NewSpriteRenderSystem(s.entityManager),
-		NewCleanupSystem(s.entityManager, 100),
+	s := &StartScene{}
+	s.Systems = append(s.Systems,
+		NewMovementSystem(&entityManager),
+		NewFoodSpawningSystem(&entityManager),
+		NewSpriteRenderSystem(&entityManager),
+		NewInteractionSystem(&entityManager),
+		NewTextRenderSystem(&entityManager),
+		NewCleanupSystem(&entityManager, 100),
 	)
 
-	s.initialized = true
-}
-
-func (s *StartScreen) Exit() {
-	log.Printf("[screen:%s] exit\n", s.Name())
-}
-
-func (s *StartScreen) Update() error {
-
-	for _, sys := range s.systems {
-		if err := sys.Update(); err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
-
-func (s *StartScreen) Draw(screen *ebiten.Image) {
-	for _, sys := range s.systems {
-		sys.Draw(screen)
-	}
-}
-
-func (s *StartScreen) AddAction(action scene.Action, callback func()) {
-	s.actions[action] = callback
+	return s
 }

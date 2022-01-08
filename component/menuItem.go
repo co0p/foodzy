@@ -2,13 +2,14 @@ package component
 
 import (
 	"github.com/co0p/foodzy/internal/ecs"
-	"github.com/hajimehoshi/ebiten/v2"
+	"image/color"
 )
 
 type MenuItem struct {
-	DefaultSprite *ebiten.Image
-	ActiveSprite  *ebiten.Image
-	Action        func()
+	Action         func()
+	Text           *Text
+	DefaultColor   color.Color
+	HighlightColor color.Color
 }
 
 const MenuItemType ecs.ComponentType = "MenuItem"

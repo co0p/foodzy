@@ -1,9 +1,5 @@
 package scene
 
-import (
-	"log"
-)
-
 type Action string
 
 type SceneManager struct {
@@ -21,28 +17,21 @@ func NewSceneManager() *SceneManager {
 	return manager
 }
 
-func (m *SceneManager) AddScreen(s Scene) {
-	log.Printf("[SceneManager] adding scene:%s\n", s.Name())
+func (m *SceneManager) AddScene(s Scene) {
 	m.scenes[s.Name()] = s
-
 }
 
-func (m *SceneManager) quit() {
-	log.Printf("[SceneManager] quit\n")
-}
+func (m *SceneManager) Activate(name string) {
 
-func (m *SceneManager) ActivateScreen(name string, pause bool) {
-	log.Printf("[SceneManager] activate scene:%s\n", name)
-
-	l, ok := m.scenes[name]
+	scene, ok := m.scenes[name]
 
 	if !ok {
 		panic("could not find scene: " + name)
 	}
 
-	if m.Current != nil && !pause {
-		m.Current.Exit()
+	if m.Current != nil {
+		m.Current.Stop()
 	}
-	m.Current = l
-	l.Init()
+	m.Current = scene
+	scene.Start()
 }

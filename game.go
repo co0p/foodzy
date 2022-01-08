@@ -2,10 +2,10 @@ package foodzy
 
 import (
 	"github.com/co0p/foodzy/asset"
+	"github.com/co0p/foodzy/internal/ecs"
 	"github.com/co0p/foodzy/internal/scene"
 	"github.com/co0p/foodzy/internal/sound"
 	"github.com/hajimehoshi/ebiten/v2"
-	"log"
 	"math/rand"
 	"os"
 	"time"
@@ -22,12 +22,7 @@ const (
 	SoundBackground        = "soundtrack"
 )
 
-const (
-	ActionQuit                   scene.Action = "quit"
-	ActionActivateStartScreen    scene.Action = "startscene"
-	ActionActivateGameScreen     scene.Action = "gamescene"
-	ActionActivateGameOverScreen scene.Action = "gameover"
-)
+type ActionType func(*ecs.EntityManager)
 
 type Game struct {
 	screenManager *scene.SceneManager
@@ -42,29 +37,18 @@ func NewGame() *Game {
 	soundManager := sound.NewSoundManager()
 
 	// actions
-	closeGame := func() { os.Exit(0) }
-	startGame := func() { sceneManager.ActivateScreen(GameScreenName, false) }
-	showStartScreen := func() { sceneManager.ActivateScreen(StartScreenName, false) }
-	showGameOverScene := func() { sceneManager.ActivateScreen(GameOverSceneName, false) }
+	exit := func(m *ecs.EntityManager) { os.Exit(0) }
+	startGame := func(m *ecs.EntityManager) { sceneManager.Activate(GameSceneName) }
+	showPauseScene := func(m *ecs.EntityManager) { sceneManager.Activate(PauseSceneName) }
+	showGameOverScene := func(*ecs.EntityManager) { sceneManager.Activate(GameOverSceneName) }
 
-	// screens
-	startScreen := NewStartScreen()
-	startScreen.AddAction(ActionActivateGameScreen, startGame)
-	startScreen.AddAction(ActionQuit, closeGame)
+	// scenes
+	sceneManager.AddScene(NewStartScene(startGame, exit))
+	sceneManager.AddScene(NewPauseScene(startGame))
+	sceneManager.AddScene(NewGameScene(soundManager, showGameOverScene, showPauseScene))
+	sceneManager.AddScene(NewGameOverScene(soundManager, exit))
 
-	gameOverScene := NewGameOverScene(soundManager)
-	gameOverScene.AddAction(ActionActivateGameScreen, startGame)
-	gameOverScene.AddAction(ActionQuit, closeGame)
-
-	gameScreen := NewGameScreen(soundManager)
-	gameScreen.AddAction(ActionQuit, closeGame)
-	gameScreen.AddAction(ActionActivateStartScreen, showStartScreen)
-	gameScreen.AddAction(ActionActivateGameOverScreen, showGameOverScene)
-
-	sceneManager.AddScreen(startScreen)
-	sceneManager.AddScreen(gameScreen)
-	sceneManager.AddScreen(gameOverScene)
-	sceneManager.ActivateScreen(StartScreenName, false)
+	sceneManager.Activate(StartSceneName)
 
 	// sound
 	soundManager.Add(SoundEat, asset.Eating)
@@ -78,12 +62,6 @@ func NewGame() *Game {
 }
 
 func (g *Game) Update() error {
-
-	if ebiten.IsWindowBeingClosed() {
-		// TODO: raise WINDOW_CLOSE EVENT
-		log.Printf("[game] window close received\n")
-	}
-
 	return g.screenManager.Current.Update()
 }
 

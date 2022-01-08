@@ -9,10 +9,10 @@ import (
 
 type HealthSystem struct {
 	manager        *ecs.EntityManager
-	gameOverAction func()
+	gameOverAction func(*ecs.EntityManager)
 }
 
-func NewHealthSystem(manager *ecs.EntityManager, gameOverAction func()) *HealthSystem {
+func NewHealthSystem(manager *ecs.EntityManager, gameOverAction func(entityManager *ecs.EntityManager)) *HealthSystem {
 	return &HealthSystem{manager: manager, gameOverAction: gameOverAction}
 }
 
@@ -31,7 +31,7 @@ func (s *HealthSystem) Update() error {
 	text.Value = fmt.Sprintf("%3d%%", health.CurrentHealth())
 
 	if health.CurrentHealth() == 0 {
-		s.gameOverAction()
+		s.gameOverAction(s.manager)
 	}
 
 	return nil

@@ -17,16 +17,17 @@ var (
 	FontHuge   font.Face
 )
 
+func init() {
+	FontMedium = loadFont(asset.StopBullyingFont, 24)
+	FontBig = loadFont(asset.StopBullyingFont, 46)
+	FontHuge = loadFont(asset.StopBullyingFont, 96)
+}
+
 type TextRenderSystem struct {
 	manager *ecs.EntityManager
 }
 
 func NewTextRenderSystem(manager *ecs.EntityManager) *TextRenderSystem {
-
-	FontMedium = loadFont(asset.StopBullyingFont, 24)
-	FontBig = loadFont(asset.StopBullyingFont, 46)
-	FontHuge = loadFont(asset.StopBullyingFont, 80)
-
 	return &TextRenderSystem{manager: manager}
 }
 
