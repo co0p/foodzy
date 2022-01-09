@@ -44,4 +44,4 @@ this file is used to generate asset files to be loaded by the game
 //go:generate file2byteslice -package=asset -input=menu_quit_active.png -output=menuQuitActive.go -var=MenuQuitActive
 
 // font
-//go:generate file2byteslice -package=asset -input=StopBullying.ttf -output=StopBullying.go -var=StopBullyingFont
+//go:generate file2byteslice -package=asset -input=StopBullying-EaBLg.ttf -output=StopBullying.go -var=StopBullyingFont

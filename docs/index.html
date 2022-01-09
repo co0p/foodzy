@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Foodzy</title>
+
+    <style>
+        h1, h2 {
+            size: 2em;
+            font-family: 'Monospaced', sans-serif;
+        }
+
+        h2 {
+            size: 1.5em;
+        }
+
+        body {
+            background: aliceblue;
+            color: #11141b;
+            margin: 0 auto;
+            max-width: 900px;
+        }
+
+        article {
+            background: white;
+            padding: 1em;
+            margin: 1em;
+        }
+
+        section {
+            padding-top: 1em;
+        }
+
+    </style>
+</head>
+<body>
+
+<main>
+    <h1>Foodzy <small>collecting food game written in golang, powered by ebiten</small></h1>
+
+    <article>
+        <h2>About the game</h2>
+
+        <section>
+            As a player your goal is to stay alive as long as possible by eating food. Once you have 0% energy you lost.
+            Different food has different energy values. Don't eat sweets and unhealthy food since it removes more energy.
+        </section>
+
+        <section>
+            The game is written in an <a href="https://co0p.github.io/posts/ecs-animation/" target="_blank">ECS fashion</a>
+            using the <a href="https://go.dev" target="_blank">golang programming language</a>.
+            The heavy lifting (graphics & sound) is done by the <a href="https://ebiten.org">ebiten library</a>.
+        </section>
+
+    </article>
+
+    <article>
+        <h2>Play the game</h2>
+        <iframe width="800" height="600" src="game.html"></iframe>
+    </article>
+
+    <article>
+        <h2>Resources</h2>
+
+        The following resources made this game possible
+
+        <ul>
+            <li>Ebiten Library: <a href="https://ebiten.org">ebiten library</a></li>
+            <li>Eating sound: <a href="https://soundbible.com/search.php?q=bite">Caroline Ford / Eating-SoundBible.com-1470347575</a></li>
+            <li>Image assets: <a href="https://axelpale.github.io/openmoji-sprites/">https://axelpale.github.io/openmoji-sprites/</a></li>
+            <li>Font: By Khurasan <a href="https://www.fontspace.com/stop-bullying-font-f71851">https://www.fontspace.com/stop-bullying-font-f71851</a></li>
+        </ul>
+    </article>
+</main>
+
+</body>
+</html>
