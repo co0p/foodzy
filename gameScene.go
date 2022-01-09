@@ -5,6 +5,7 @@ import (
 	"github.com/co0p/foodzy/internal/scene"
 	"github.com/co0p/foodzy/internal/sound"
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
 const GameSceneName string = "game"
@@ -50,7 +51,7 @@ func (g *GameScene) Name() string {
 
 func (g *GameScene) Update() error {
 
-	if ebiten.IsKeyPressed(ebiten.KeyEscape) {
+	if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
 		g.pauseAction(nil)
 	}
 

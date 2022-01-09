@@ -3,7 +3,6 @@ package foodzy
 import (
 	"github.com/co0p/foodzy/component"
 	"github.com/co0p/foodzy/internal/ecs"
-	"image/color"
 )
 
 func NewHealth() *ecs.Entity {
@@ -14,7 +13,7 @@ func NewHealth() *ecs.Entity {
 		X: float64(ScreenWidth - 100),
 		Y: 50,
 	}
-	text := &component.Text{Value: "", Color: color.White, Font: &FontMedium}
+	text := &component.Text{Value: "", Color: SecondaryColor, Font: &FontMedium}
 
 	e.AddComponents(text, transform)
 	return e

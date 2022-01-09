@@ -12,6 +12,7 @@ type GameoverSystem struct {
 	soundManager  *sound.SoundManager
 	count         int
 	exitAction    func(*ecs.EntityManager)
+	original      *ebiten.Image
 }
 
 func NewGameoverSystem(manager *ecs.EntityManager, soundManager *sound.SoundManager, exitAction func(*ecs.EntityManager)) *GameoverSystem {
@@ -46,4 +47,17 @@ func (s *GameoverSystem) Update() error {
 	return nil
 }
 
-func (s *GameoverSystem) Draw(image *ebiten.Image) { /* nothing to do */ }
+func (s *GameoverSystem) Draw(screen *ebiten.Image) {
+	if s.original == nil {
+		s.original = ebiten.NewImageFromImage(screen)
+	}
+
+	for j := -3; j <= 3; j++ {
+		for i := -3; i <= 3; i++ {
+			op := &ebiten.DrawImageOptions{}
+			op.GeoM.Translate(float64(i), float64(j))
+			op.ColorM.Scale(1, 1, 1, 1.0/25.0)
+			screen.DrawImage(s.original, op)
+		}
+	}
+}

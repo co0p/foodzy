@@ -2,6 +2,7 @@ package ecs
 
 import (
 	"fmt"
+	"log"
 )
 
 type Entity struct {
@@ -33,10 +34,10 @@ func (e *Entity) GetComponent(cType ComponentType) ComponentTyper {
 	}
 }
 
-// AddComponent adds a gameplay to the Entity, panics if a gameplay of the same type already exists
+// AddComponent adds a gameplay to the Entity
 func (e *Entity) AddComponent(c ComponentTyper) {
 	if e.HasComponent(c.Type()) {
-		panic(fmt.Sprintf("Entity already has component of type %s attached", c))
+		log.Printf("Entity already has component of type %s attached", c)
 	}
 	e.components[c.Type()] = c
 }

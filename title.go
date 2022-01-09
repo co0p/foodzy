@@ -7,14 +7,15 @@ import (
 )
 
 func NewTitle() *ecs.Entity {
-	text := &component.Text{
+	txt := &component.Text{
 		Value: "Foodzy",
 		Color: color.RGBA{R: 0, G: 20, B: 27, A: 255},
 		Font:  &FontHuge,
 	}
-	transform := &component.Transform{X: 200, Y: 150, Z: 1, Scale: 1}
+	posX, _ := txt.RelativeCenter(ScreenWidth, ScreenHeight)
+	transform := &component.Transform{X: posX, Y: 50, Z: 1, Scale: 1}
 
 	entity := ecs.NewEntity("title", true)
-	entity.AddComponents(transform, text)
+	entity.AddComponents(transform, txt)
 	return entity
 }

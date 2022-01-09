@@ -5,7 +5,7 @@ import (
 	"github.com/co0p/foodzy/internal/ecs"
 	"github.com/co0p/foodzy/internal/scene"
 	"github.com/hajimehoshi/ebiten/v2"
-	"golang.org/x/image/colornames"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
 const PauseSceneName = "pause"
@@ -17,12 +17,12 @@ type PauseScene struct {
 }
 
 func NewPauseScene(resumeAction ActionType) *PauseScene {
+	txt := component.Text{Value: "PAUSE", Color: PrimaryColor, Font: &FontHuge}
 
-	transform := component.Transform{X: 100, Y: 100, Z: 1, Scale: 1}
-	text := component.Text{Value: "PAUSE", Color: colornames.Beige, Font: &FontHuge}
-
+	posX, posY := txt.RelativeCenter(ScreenWidth, ScreenHeight)
+	transform := component.Transform{X: posX, Y: posY, Z: 1, Scale: 1}
 	pauseText := ecs.NewEntity("pause", true)
-	pauseText.AddComponents(&transform, &text)
+	pauseText.AddComponents(&transform, &txt)
 
 	entityManager := ecs.EntityManager{}
 	entityManager.AddEntity(NewBackground())
@@ -39,9 +39,11 @@ func NewPauseScene(resumeAction ActionType) *PauseScene {
 
 func (s *PauseScene) Update() error {
 
-	if ebiten.IsKeyPressed(ebiten.KeyEscape) {
+	if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
 		s.resumeAction(nil)
+		return nil
 	}
+
 	return s.GameScene.Update()
 }
 

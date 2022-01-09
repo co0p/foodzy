@@ -26,6 +26,10 @@ func (g *GameScene) Stop() {
 	g.running = false
 }
 
+func (g *GameScene) IsStopped() bool {
+	return g.running
+}
+
 func (g *GameScene) Update() error {
 	if !g.running {
 		return nil

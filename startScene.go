@@ -33,6 +33,7 @@ func NewStartScene(startAction ActionType, quitAction ActionType) *StartScene {
 		NewSpriteRenderSystem(&entityManager),
 		NewInteractionSystem(&entityManager),
 		NewTextRenderSystem(&entityManager),
+		NewDebugRendererSystem(&entityManager),
 		NewCleanupSystem(&entityManager, 100),
 	)
 

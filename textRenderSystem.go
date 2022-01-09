@@ -8,6 +8,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/text"
 	"golang.org/x/image/font"
 	"golang.org/x/image/font/opentype"
+	"image/color"
 	"log"
 )
 
@@ -15,6 +16,11 @@ var (
 	FontMedium font.Face
 	FontBig    font.Face
 	FontHuge   font.Face
+)
+
+var (
+	PrimaryColor   = color.RGBA{R: 0, G: 20, B: 27, A: 240}
+	SecondaryColor = color.RGBA{R: 0, G: 20, B: 27, A: 200}
 )
 
 func init() {
@@ -42,7 +48,10 @@ func (s *TextRenderSystem) Draw(screen *ebiten.Image) {
 
 		txt := e.GetComponent(component.TextType).(*component.Text)
 		pos := e.GetComponent(component.TransformType).(*component.Transform)
-		text.Draw(screen, txt.Value, *txt.Font, int(pos.X), int(pos.Y), txt.Color)
+
+		// we have to adjust the rendering due to the dot-positioning
+		_, h := txt.Dimensions()
+		text.Draw(screen, txt.Value, *txt.Font, int(pos.X), int(pos.Y+h), txt.Color)
 	}
 }
 
