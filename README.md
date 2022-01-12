@@ -14,12 +14,11 @@ you stay alive the better. Make sure those calories are in check as well.
 Increase of difficulty
 ----------------------
 
-based on your nutrition levels the plate changes form, or your movements become slower.
+TODO: based on your nutrition levels the plate changes form, or your movements become slower.
 
 current status
 ------------
-![current status](/docs/foodzy.gif)
-
+You can play the game at https://co0p.github.io/foodzy/
 
 resources
 ==========
