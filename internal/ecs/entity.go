@@ -49,8 +49,8 @@ func (e *Entity) AddComponents(c ...ComponentTyper) {
 }
 
 // RemoveComponent removes the associated gameplay from the Entity
-func (e *Entity) RemoveComponent(c ComponentTyper) {
-	delete(e.components, c.Type())
+func (e *Entity) RemoveComponent(c ComponentType) {
+	delete(e.components, c)
 }
 
 func (e *Entity) String() string {

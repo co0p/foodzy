@@ -14,8 +14,9 @@ func NewTitle() *ecs.Entity {
 	}
 	posX, _ := txt.RelativeCenter(ScreenWidth, ScreenHeight)
 	transform := &component.Transform{X: posX, Y: 50, Z: 1, Scale: 1}
+	velocity := &component.Velocity{Y: 5}
 
 	entity := ecs.NewEntity("title", true)
-	entity.AddComponents(transform, txt)
+	entity.AddComponents(transform, velocity, txt)
 	return entity
 }

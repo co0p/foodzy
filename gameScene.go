@@ -39,6 +39,7 @@ func NewGameScene(soundManager *sound.SoundManager, gameoverAction ActionType, p
 		NewSpriteRenderSystem(&entityManager),
 		NewTextRenderSystem(&entityManager),
 		NewSoundSystem(&entityManager, soundManager),
+		NewDebugRendererSystem(&entityManager),
 		NewCleanupSystem(&entityManager, 100),
 	)
 

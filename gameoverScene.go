@@ -28,6 +28,7 @@ func NewGameOverScene(soundManager *sound.SoundManager, actionQuit ActionType) *
 		NewSpriteRenderSystem(&entityManager),
 		NewGameoverSystem(&entityManager, soundManager, actionQuit),
 		NewTextRenderSystem(&entityManager),
+		NewDebugRendererSystem(&entityManager),
 		NewCleanupSystem(&entityManager, 10),
 	)
 

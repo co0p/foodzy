@@ -21,7 +21,7 @@ func (s *SoundSystem) Update() error {
 
 	for _, e := range entities {
 		soundEffect := e.GetComponent(component.SoundType).(*component.Sound)
-		e.RemoveComponent(soundEffect)
+		e.RemoveComponent(component.SoundType)
 
 		s.soundManager.Play(soundEffect.Clip)
 	}
