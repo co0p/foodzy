@@ -21,6 +21,21 @@ func (m *SceneManager) AddScene(s Scene) {
 	m.scenes[s.Name()] = s
 }
 
+func (m *SceneManager) Restart(name string) {
+
+	scene, ok := m.scenes[name]
+
+	if !ok {
+		panic("could not find scene: " + name)
+	}
+
+	if m.Current != nil {
+		m.Current.Stop()
+	}
+	m.Current = scene
+	scene.Init()
+	scene.Start()
+}
 func (m *SceneManager) Activate(name string) {
 
 	scene, ok := m.scenes[name]

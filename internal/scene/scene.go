@@ -6,6 +6,7 @@ import (
 )
 
 type Scene interface {
+	Init()
 	Start()
 	Stop()
 	Update() error
@@ -17,6 +18,8 @@ type GameScene struct {
 	Systems []ecs.System
 	running bool
 }
+
+func (g *GameScene) Init() {}
 
 func (g *GameScene) Start() {
 	g.running = true

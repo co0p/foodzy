@@ -13,6 +13,7 @@ import (
 )
 
 var (
+	FontSmall  font.Face
 	FontMedium font.Face
 	FontBig    font.Face
 	FontHuge   font.Face
@@ -24,6 +25,7 @@ var (
 )
 
 func init() {
+	FontSmall = loadFont(asset.StopBullyingFont, 14)
 	FontMedium = loadFont(asset.StopBullyingFont, 24)
 	FontBig = loadFont(asset.StopBullyingFont, 46)
 	FontHuge = loadFont(asset.StopBullyingFont, 96)

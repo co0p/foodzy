@@ -39,14 +39,16 @@ func NewGame() *Game {
 	// actions
 	exit := func(m *ecs.EntityManager) { os.Exit(0) }
 	startGame := func(m *ecs.EntityManager) { sceneManager.Activate(GameSceneName) }
+	showStartScene := func(m *ecs.EntityManager) { sceneManager.Activate(StartSceneName) }
+	restartGame := func(m *ecs.EntityManager) { sceneManager.Restart(GameSceneName) }
 	showPauseScene := func(m *ecs.EntityManager) { sceneManager.Activate(PauseSceneName) }
-	showGameOverScene := func(*ecs.EntityManager) { sceneManager.Activate(GameOverSceneName) }
+	showGameOverScene := func(*ecs.EntityManager) { sceneManager.Restart(GameOverSceneName) }
 
 	// scenes
-	sceneManager.AddScene(NewStartScene(startGame, exit))
+	sceneManager.AddScene(NewStartScene(restartGame, exit))
 	sceneManager.AddScene(NewPauseScene(startGame))
 	sceneManager.AddScene(NewGameScene(soundManager, showGameOverScene, showPauseScene))
-	sceneManager.AddScene(NewGameOverScene(soundManager, exit))
+	sceneManager.AddScene(NewGameOverScene(soundManager, showStartScene))
 
 	sceneManager.Activate(StartSceneName)
 

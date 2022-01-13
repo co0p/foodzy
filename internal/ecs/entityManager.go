@@ -62,3 +62,7 @@ func (m *EntityManager) RemoveInactive() {
 
 	m.entities = cleaned
 }
+
+func (m *EntityManager) Clear() {
+	m.entities = []*Entity{}
+}

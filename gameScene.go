@@ -15,6 +15,7 @@ type GameScene struct {
 	gameoverAction ActionType
 	pauseAction    ActionType
 	entityManager  *ecs.EntityManager
+	soundManager   *sound.SoundManager
 }
 
 func NewGameScene(soundManager *sound.SoundManager, gameoverAction ActionType, pauseAction ActionType) *GameScene {
@@ -26,6 +27,7 @@ func NewGameScene(soundManager *sound.SoundManager, gameoverAction ActionType, p
 
 	g := &GameScene{
 		entityManager:  &entityManager,
+		soundManager:   soundManager,
 		gameoverAction: gameoverAction,
 		pauseAction:    pauseAction,
 	}
@@ -48,6 +50,18 @@ func NewGameScene(soundManager *sound.SoundManager, gameoverAction ActionType, p
 
 func (g *GameScene) Name() string {
 	return GameSceneName
+}
+
+func (g *GameScene) Init() {
+	g.Stop()
+	g.entityManager.Clear()
+
+	g.soundManager.Volume(SoundBackground, 1)
+
+	g.entityManager.AddEntity(NewBackground())
+	g.entityManager.AddEntity(NewPlayer())
+	g.entityManager.AddEntity(NewFoodSpawner(40))
+	g.entityManager.AddEntity(NewHealth())
 }
 
 func (g *GameScene) Update() error {

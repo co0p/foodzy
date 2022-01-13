@@ -1,10 +1,13 @@
 package foodzy
 
 import (
+	"fmt"
 	"github.com/co0p/foodzy/component"
 	"github.com/co0p/foodzy/internal/ecs"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
+	"github.com/hajimehoshi/ebiten/v2/text"
+	"golang.org/x/image/colornames"
 	"image/color"
 )
 
@@ -55,6 +58,11 @@ func (s *DebugRendererSystem) Draw(screen *ebiten.Image) {
 
 		screen.DrawImage(img, op)
 	}
+
+	fps := fmt.Sprintf("FPS: %.1f", ebiten.CurrentFPS())
+	text.Draw(screen, fps, FontSmall, 10, 50, colornames.Firebrick)
+	tps := fmt.Sprintf("FPS: %.1f", ebiten.CurrentFPS())
+	text.Draw(screen, tps, FontSmall, 100, 50, colornames.Firebrick)
 }
 
 func (s *DebugRendererSystem) Update() error {

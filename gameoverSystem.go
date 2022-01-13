@@ -11,15 +11,15 @@ type GameoverSystem struct {
 	entityManager *ecs.EntityManager
 	soundManager  *sound.SoundManager
 	count         int
-	exitAction    func(*ecs.EntityManager)
+	startAction   ActionType
 	original      *ebiten.Image
 }
 
-func NewGameoverSystem(manager *ecs.EntityManager, soundManager *sound.SoundManager, exitAction func(*ecs.EntityManager)) *GameoverSystem {
+func NewGameoverSystem(manager *ecs.EntityManager, soundManager *sound.SoundManager, startAction ActionType) *GameoverSystem {
 	return &GameoverSystem{
 		entityManager: manager,
 		soundManager:  soundManager,
-		exitAction:    exitAction,
+		startAction:   startAction,
 	}
 }
 
@@ -30,7 +30,7 @@ func (s *GameoverSystem) Update() error {
 	}
 	vol := s.soundManager.Volume(SoundBackground, 0)
 	if vol < 0 {
-		s.exitAction(s.entityManager)
+		s.startAction(s.entityManager)
 	}
 	s.count++
 
